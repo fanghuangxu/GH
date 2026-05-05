@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>古典诗句问答</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ink-black: #2c2c2c;
+            --paper-white: #f5f0e6;
+            --cinnabar-red: #c73e3a;
+            --gold-accent: #b8860b;
+            --light-paper: #faf8f3;
+            --dark-red: #8b0000;
+            --border-brown: #8b7355;
+        }
+
+        body {
+            font-family: "SimSun", "宋体", "Noto Serif SC", serif;
+            background: var(--ink-black);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            min-height: 600px;
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            background: var(--paper-white);
+            border-radius: 8px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 30px,
+                    rgba(139, 115, 85, 0.1) 30px,
+                    rgba(139, 115, 85, 0.1) 31px
+                );
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scrollUnfold {
+            from { max-height: 0; opacity: 0; }
+            to { max-height: 500px; opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes correctFlash {
+            0% { background-color: var(--paper-white); }
+            50% { background-color: rgba(199, 62, 58, 0.2); }
+            100% { background-color: var(--paper-white); }
+        }
+
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        @keyframes scoreUp {
+            0% { transform: scale(1); color: var(--ink-black); }
+            50% { transform: scale(1.3); color: var(--cinnabar-red); }
+            100% { transform: scale(1); color: var(--ink-black); }
+        }
+
+        .ornament-border {
+            position: absolute;
+            border: 3px solid var(--border-brown);
+            pointer-events: none;
+        }
+
+        .ornament-border.top-left {
+            top: 10px;
+            left: 10px;
+            right: 60%;
+            bottom: 60%;
+            border-right: none;
+            border-bottom: none;
+            border-top-left-radius: 8px;
+        }
+
+        .ornament-border.bottom-right {
+            top: 60%;
+            left: 60%;
+            right: 10px;
+            bottom: 10px;
+            border-left: none;
+            border-top: none;
+            border-bottom-right-radius: 8px;
+        }
+
+        .corner-decoration {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--cinnabar-red);
+        }
+
+        .corner-decoration.tl { top: 5px; left: 5px; border-right: none; border-bottom: none; }
+        .corner-decoration.tr { top: 5px; right: 5px; border-left: none; border-bottom: none; }
+        .corner-decoration.bl { bottom: 5px; left: 5px; border-right: none; border-top: none; }
+        .corner-decoration.br { bottom: 5px; right: 5px; border-left: none; border-top: none; }
+
+        h1 {
+            text-align: center;
+            color: var(--ink-black);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.2em;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--ink-black);
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            letter-spacing: 0.15em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--border-brown);
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            max-width: 280px;
+            margin: 15px auto;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-family: inherit;
+            color: var(--paper-white);
+            background: var(--cinnabar-red);
+            border: 2px solid var(--dark-red);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.1em;
+        }
+
+        .btn:hover {
+            background: var(--dark-red);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--border-brown);
+            border-color: #6b5344;
+        }
+
+        .btn-secondary:hover {
+            background: #6b5344;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9em;
+            max-width: 150px;
+        }
+
+        .difficulty-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .difficulty-btn {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border: 2px solid var(--border-brown);
+            background: var(--paper-white);
+            color: var(--ink-black);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .difficulty-btn:hover {
+            border-color: var(--cinnabar-red);
+            color: var(--cinnabar-red);
+        }
+
+        .difficulty-btn.selected {
+            background: var(--cinnabar-red);
+            color: var(--paper-white);
+            border-color: var(--cinnabar-red);
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(139, 115, 85, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(139, 115, 85, 0.3);
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: var(--border-brown);
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            color: var(--ink-black);
+            font-weight: bold;
+        }
+
+        .stat-value.highlight {
+            animation: scoreUp 0.5s ease;
+        }
+
+        .poem-scroll {
+            background: linear-gradient(to bottom, #e8e0d0, var(--paper-white), #e8e0d0);
+            border: 8px solid #8b7355;
+            border-radius: 4px;
+            padding: 40px;
+            margin: 20px 0;
+            position: relative;
+            box-shadow: 
+                inset 0 0 30px rgba(139, 115, 85, 0.2),
+                0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: scrollUnfold 0.8s ease-out;
+        }
+
+        .poem-scroll::before,
+        .poem-scroll::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            height: 20px;
+            background: linear-gradient(to bottom, #6b5344, #8b7355, #6b5344);
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .poem-scroll::before { top: -15px; }
+        .poem-scroll::after { bottom: -15px; }
+
+        .poem-content {
+            font-size: 1.8em;
+            text-align: center;
+            color: var(--ink-black);
+            line-height: 2;
+            margin-bottom: 15px;
+            letter-spacing: 0.15em;
+        }
+
+        .poem-question {
+            text-align: center;
+            font-size: 1.2em;
+            color: var(--border-brown);
+            margin-top: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .option-btn {
+            padding: 18px 15px;
+            font-size: 1.1em;
+            font-family: inherit;
+            background: var(--paper-white);
+            border: 2px solid var(--border-brown);
+            color: var(--ink-black);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--cinnabar-red);
+            color: var(--cinnabar-red);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 115, 85, 0.2);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .option-btn.correct {
+            background: rgba(199, 62, 58, 0.2);
+            border-color: var(--cinnabar-red);
+            color: var(--cinnabar-red);
+            animation: pulse 0.5s ease;
+        }
+
+        .option-btn.wrong {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: #999;
+            color: #999;
+            animation: wrongShake 0.5s ease;
+        }
+
+        .option-btn.key-selected {
+            border-color: var(--cinnabar-red);
+            background: rgba(199, 62, 58, 0.15);
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(199, 62, 58, 0.4);
+        }
+
+        .btn.key-selected {
+            transform: scale(0.95);
+            box-shadow: 0 0 10px rgba(139, 115, 85, 0.5);
+        }
+
+        .timer-bar {
+            height: 6px;
+            background: rgba(139, 115, 85, 0.2);
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .timer-progress {
+            height: 100%;
+            background: linear-gradient(to right, var(--cinnabar-red), var(--gold-accent));
+            border-radius: 3px;
+            transition: width 0.1s linear;
+        }
+
+        .timer-text {
+            text-align: center;
+            font-size: 1.1em;
+            color: var(--border-brown);
+            margin-bottom: 10px;
+        }
+
+        .feedback {
+            text-align: center;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 1.2em;
+            display: none;
+        }
+
+        .feedback.correct {
+            display: block;
+            background: rgba(199, 62, 58, 0.1);
+            border: 1px solid var(--cinnabar-red);
+            color: var(--cinnabar-red);
+            animation: correctFlash 0.5s ease;
+        }
+
+        .feedback.wrong {
+            display: block;
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid #999;
+            color: #666;
+        }
+
+        .feedback-detail {
+            font-size: 0.9em;
+            margin-top: 10px;
+            color: var(--border-brown);
+        }
+
+        .result-screen {
+            text-align: center;
+        }
+
+        .final-score {
+            font-size: 4em;
+            color: var(--cinnabar-red);
+            margin: 30px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .result-stat {
+            text-align: center;
+        }
+
+        .result-stat-value {
+            font-size: 2em;
+            color: var(--ink-black);
+        }
+
+        .result-stat-label {
+            font-size: 0.9em;
+            color: var(--border-brown);
+        }
+
+        .leaderboard {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(139, 115, 85, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(139, 115, 85, 0.3);
+        }
+
+        .leaderboard h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--ink-black);
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            border-bottom: 1px dashed rgba(139, 115, 85, 0.3);
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .leaderboard-rank {
+            color: var(--cinnabar-red);
+            font-weight: bold;
+            width: 30px;
+        }
+
+        .leaderboard-score {
+            color: var(--ink-black);
+            font-weight: bold;
+        }
+
+        .favorites-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(139, 115, 85, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(139, 115, 85, 0.3);
+        }
+
+        .favorites-section h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--ink-black);
+        }
+
+        .favorite-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: var(--paper-white);
+            border-radius: 4px;
+            border-left: 3px solid var(--cinnabar-red);
+        }
+
+        .favorite-poem {
+            font-size: 1.1em;
+            color: var(--ink-black);
+            margin-bottom: 5px;
+        }
+
+        .favorite-info {
+            font-size: 0.85em;
+            color: var(--border-brown);
+        }
+
+        .favorite-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .icon-btn {
+            padding: 5px 10px;
+            font-size: 0.85em;
+            border: 1px solid var(--border-brown);
+            background: var(--paper-white);
+            color: var(--border-brown);
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            border-color: var(--cinnabar-red);
+            color: var(--cinnabar-red);
+        }
+
+        .empty-message {
+            text-align: center;
+            color: var(--border-brown);
+            font-style: italic;
+            padding: 20px;
+        }
+
+        .tab-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            font-size: 1em;
+            font-family: inherit;
+            border: 2px solid var(--border-brown);
+            background: var(--paper-white);
+            color: var(--ink-black);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--cinnabar-red);
+            color: var(--paper-white);
+            border-color: var(--cinnabar-red);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .question-type-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .toggle-btn {
+            padding: 10px 20px;
+            font-size: 0.95em;
+            font-family: inherit;
+            border: 2px solid var(--border-brown);
+            background: var(--paper-white);
+            color: var(--ink-black);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            background: var(--border-brown);
+            color: var(--paper-white);
+            border-color: var(--border-brown);
+        }
+
+        .bonus-text {
+            color: var(--gold-accent);
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .screen {
+                padding: 25px 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            .poem-content {
+                font-size: 1.4em;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-stats {
+                gap: 20px;
+            }
+
+            .difficulty-selector {
+                gap: 10px;
+            }
+
+            .difficulty-btn {
+                padding: 10px 15px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="screen active" id="startScreen">
+            <div class="ornament-border top-left"></div>
+            <div class="ornament-border bottom-right"></div>
+            <div class="corner-decoration tl"></div>
+            <div class="corner-decoration tr"></div>
+            <div class="corner-decoration bl"></div>
+            <div class="corner-decoration br"></div>
+
+            <h1>古典诗句问答</h1>
+            <p class="subtitle">诵千古诗词，传华夏文明</p>
+
+            <div class="question-type-toggle">
+                <button class="toggle-btn active" data-type="mixed" onclick="setQuestionType('mixed')">混合模式</button>
+            </div>
+
+            <div class="difficulty-selector">
+                <button class="difficulty-btn" data-difficulty="easy" onclick="setDifficulty('easy')">简单</button>
+                <button class="difficulty-btn selected" data-difficulty="medium" onclick="setDifficulty('medium')">中等</button>
+                <button class="difficulty-btn" data-difficulty="hard" onclick="setDifficulty('hard')">困难</button>
+            </div>
+
+            <button class="btn" onclick="startGame()">开始答题</button>
+            <button class="btn btn-secondary" onclick="showFavorites()">收藏诗句</button>
+            <button class="btn btn-secondary btn-small" onclick="showLeaderboard()">排行榜</button>
+        </div>
+
+        <div class="screen" id="gameScreen">
+            <div class="ornament-border top-left"></div>
+            <div class="ornament-border bottom-right"></div>
+            <div class="corner-decoration tl"></div>
+            <div class="corner-decoration tr"></div>
+            <div class="corner-decoration bl"></div>
+            <div class="corner-decoration br"></div>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-label">分数</div>
+                    <div class="stat-value" id="scoreDisplay">0</div>
+                    <div class="bonus-text" id="bonusText"></div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">连击</div>
+                    <div class="stat-value" id="comboDisplay">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">已答</div>
+                    <div class="stat-value" id="answeredDisplay">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">剩余</div>
+                    <div class="stat-value" id="remainingDisplay">20</div>
+                </div>
+            </div>
+
+            <div class="timer-text">剩余时间: <span id="timerDisplay">15</span>秒</div>
+            <div class="timer-bar">
+                <div class="timer-progress" id="timerProgress"></div>
+            </div>
+
+            <div class="poem-scroll">
+                <div class="poem-content" id="poemContent"></div>
+                <div class="poem-question" id="poemQuestion"></div>
+            </div>
+
+            <div class="options-grid" id="optionsGrid"></div>
+
+            <div class="feedback" id="feedback">
+                <div id="feedbackText"></div>
+                <div class="feedback-detail" id="feedbackDetail"></div>
+            </div>
+
+            <div class="game-controls">
+                <button class="btn btn-secondary btn-small" onclick="addToFavorites()" id="favoriteBtn">收藏此诗</button>
+                <button class="btn btn-small" onclick="nextQuestion()" id="nextBtn" style="display:none;">下一题 (Enter)</button>
+            </div>
+        </div>
+
+        <div class="screen" id="endScreen">
+            <div class="ornament-border top-left"></div>
+            <div class="ornament-border bottom-right"></div>
+            <div class="corner-decoration tl"></div>
+            <div class="corner-decoration tr"></div>
+            <div class="corner-decoration bl"></div>
+            <div class="corner-decoration br"></div>
+
+            <div class="result-screen">
+                <h2>答题结束</h2>
+                <div class="final-score" id="finalScore">0</div>
+                <p style="text-align:center; color: var(--border-brown);">最终得分</p>
+
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <div class="result-stat-value" id="correctCount">0</div>
+                        <div class="result-stat-label">答对</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-stat-value" id="wrongCount">0</div>
+                        <div class="result-stat-label">答错</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-stat-value" id="maxCombo">0</div>
+                        <div class="result-stat-label">最高连击</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-stat-value" id="timeBonus">0</div>
+                        <div class="result-stat-label">计时奖励</div>
+                    </div>
+                </div>
+
+                <div class="leaderboard">
+                    <h3>最高分排行榜</h3>
+                    <div id="endLeaderboard"></div>
+                </div>
+
+                <button class="btn" onclick="restartGame()">再来一局</button>
+                <button class="btn btn-secondary" onclick="showFavorites()">查看收藏</button>
+                <button class="btn btn-secondary btn-small" onclick="goToStart()">返回主页</button>
+            </div>
+        </div>
+
+        <div class="screen" id="favoritesScreen">
+            <div class="ornament-border top-left"></div>
+            <div class="ornament-border bottom-right"></div>
+            <div class="corner-decoration tl"></div>
+            <div class="corner-decoration tr"></div>
+            <div class="corner-decoration bl"></div>
+            <div class="corner-decoration br"></div>
+
+            <h2>收藏的诗句</h2>
+
+            <div id="favoritesList">
+                <p class="empty-message">暂无收藏的诗句</p>
+            </div>
+
+            <button class="btn btn-secondary" onclick="goToStart()">返回主页</button>
+        </div>
+
+        <div class="screen" id="leaderboardScreen">
+            <div class="ornament-border top-left"></div>
+            <div class="ornament-border bottom-right"></div>
+            <div class="corner-decoration tl"></div>
+            <div class="corner-decoration tr"></div>
+            <div class="corner-decoration bl"></div>
+            <div class="corner-decoration br"></div>
+
+            <h2>最高分排行榜</h2>
+
+            <div class="leaderboard" id="leaderboardList">
+                <div id="leaderboardContent"></div>
+            </div>
+
+            <button class="btn btn-secondary" onclick="goToStart()">返回主页</button>
+        </div>
+    </div>
+
+    <script>
+        let poems = [
+            // 苏轼 - 饮湖上初晴后雨
+            { content: "水光潋滟晴方好，山色空蒙雨亦奇", firstHalf: "水光潋滟晴方好，", secondHalf: "山色空蒙雨亦奇", author: "苏轼", title: "饮湖上初晴后雨", dynasty: "宋" },
+            { content: "欲把西湖比西子，淡妆浓抹总相宜", firstHalf: "欲把西湖比西子，", secondHalf: "淡妆浓抹总相宜", author: "苏轼", title: "饮湖上初晴后雨", dynasty: "宋" },
+            
+            // 苏轼 - 六月二十七日望湖楼醉书
+            { content: "黑云翻墨未遮山，白雨跳珠乱入船", firstHalf: "黑云翻墨未遮山，", secondHalf: "白雨跳珠乱入船", author: "苏轼", title: "望湖楼醉书", dynasty: "宋" },
+            { content: "卷地风来忽吹散，望湖楼下水如天", firstHalf: "卷地风来忽吹散，", secondHalf: "望湖楼下水如天", author: "苏轼", title: "望湖楼醉书", dynasty: "宋" },
+            
+            // 杨万里 - 晓出净慈寺送林子方
+            { content: "毕竟西湖六月中，风光不与四时同", firstHalf: "毕竟西湖六月中，", secondHalf: "风光不与四时同", author: "杨万里", title: "晓出净慈寺送林子方", dynasty: "宋" },
+            { content: "接天莲叶无穷碧，映日荷花别样红", firstHalf: "接天莲叶无穷碧，", secondHalf: "映日荷花别样红", author: "杨万里", title: "晓出净慈寺送林子方", dynasty: "宋" },
+            
+            // 白居易 - 钱塘湖春行
+            { content: "孤山寺北贾亭西，水面初平云脚低", firstHalf: "孤山寺北贾亭西，", secondHalf: "水面初平云脚低", author: "白居易", title: "钱塘湖春行", dynasty: "唐" },
+            { content: "几处早莺争暖树，谁家新燕啄春泥", firstHalf: "几处早莺争暖树，", secondHalf: "谁家新燕啄春泥", author: "白居易", title: "钱塘湖春行", dynasty: "唐" },
+            { content: "乱花渐欲迷人眼，浅草才能没马蹄", firstHalf: "乱花渐欲迷人眼，", secondHalf: "浅草才能没马蹄", author: "白居易", title: "钱塘湖春行", dynasty: "唐" },
+            { content: "最爱湖东行不足，绿杨阴里白沙堤", firstHalf: "最爱湖东行不足，", secondHalf: "绿杨阴里白沙堤", author: "白居易", title: "钱塘湖春行", dynasty: "唐" },
+            
+            // 白居易 - 春题湖上
+            { content: "湖上春来似画图，乱峰围绕水平铺", firstHalf: "湖上春来似画图，", secondHalf: "乱峰围绕水平铺", author: "白居易", title: "春题湖上", dynasty: "唐" },
+            { content: "松排山面千重翠，月点波心一颗珠", firstHalf: "松排山面千重翠，", secondHalf: "月点波心一颗珠", author: "白居易", title: "春题湖上", dynasty: "唐" },
+            { content: "未能抛得杭州去，一半勾留是此湖", firstHalf: "未能抛得杭州去，", secondHalf: "一半勾留是此湖", author: "白居易", title: "春题湖上", dynasty: "唐" },
+            
+            // 林逋 - 山园小梅
+            { content: "疏影横斜水清浅，暗香浮动月黄昏", firstHalf: "疏影横斜水清浅，", secondHalf: "暗香浮动月黄昏", author: "林逋", title: "山园小梅", dynasty: "宋" },
+            
+            // 欧阳修 - 采桑子
+            { content: "轻舟短棹西湖好，绿水逶迤", firstHalf: "轻舟短棹西湖好，", secondHalf: "绿水逶迤", author: "欧阳修", title: "采桑子", dynasty: "宋" },
+            { content: "芳草长堤，隐隐笙歌处处随", firstHalf: "芳草长堤，", secondHalf: "隐隐笙歌处处随", author: "欧阳修", title: "采桑子", dynasty: "宋" },
+            { content: "残霞夕照西湖好，花坞苹汀", firstHalf: "残霞夕照西湖好，", secondHalf: "花坞苹汀", author: "欧阳修", title: "采桑子", dynasty: "宋" },
+            { content: "十顷波平，野岸无人舟自横", firstHalf: "十顷波平，", secondHalf: "野岸无人舟自横", author: "欧阳修", title: "采桑子", dynasty: "宋" },
+            
+            // 林升 - 题临安邸
+            { content: "山外青山楼外楼，西湖歌舞几时休", firstHalf: "山外青山楼外楼，", secondHalf: "西湖歌舞几时休", author: "林升", title: "题临安邸", dynasty: "宋" },
+            { content: "暖风熏得游人醉，直把杭州作汴州", firstHalf: "暖风熏得游人醉，", secondHalf: "直把杭州作汴州", author: "林升", title: "题临安邸", dynasty: "宋" },
+            
+            // 宋之问 - 灵隐寺
+            { content: "楼观沧海日，门对浙江潮", firstHalf: "楼观沧海日，", secondHalf: "门对浙江潮", author: "宋之问", title: "灵隐寺", dynasty: "唐" },
+            
+            // 柳永 - 望海潮
+            { content: "东南形胜，三吴都会，钱塘自古繁华", firstHalf: "东南形胜，", secondHalf: "三吴都会，钱塘自古繁华", author: "柳永", title: "望海潮", dynasty: "宋" },
+            { content: "有三秋桂子，十里荷花", firstHalf: "有三秋桂子，", secondHalf: "十里荷花", author: "柳永", title: "望海潮", dynasty: "宋" },
+            { content: "烟柳画桥，风帘翠幕", firstHalf: "烟柳画桥，", secondHalf: "风帘翠幕", author: "柳永", title: "望海潮", dynasty: "宋" },
+            { content: "市列珠玑，户盈罗绮，竞豪奢", firstHalf: "市列珠玑，", secondHalf: "户盈罗绮，竞豪奢", author: "柳永", title: "望海潮", dynasty: "宋" },
+            
+            // 补充更多经典杭州诗句
+            { content: "重湖叠巘清嘉，有三秋桂子", firstHalf: "重湖叠巘清嘉，", secondHalf: "有三秋桂子", author: "柳永", title: "望海潮", dynasty: "宋" },
+            { content: "羌管弄晴，菱歌泛夜", firstHalf: "羌管弄晴，", secondHalf: "菱歌泛夜", author: "柳永", title: "望海潮", dynasty: "宋" },
+            { content: "十里荷花，嘻嘻钓叟莲娃", firstHalf: "十里荷花，", secondHalf: "嘻嘻钓叟莲娃", author: "柳永", title: "望海潮", dynasty: "宋" },
+            { content: "千骑拥高牙，乘醉听箫鼓", firstHalf: "千骑拥高牙，", secondHalf: "乘醉听箫鼓", author: "柳永", title: "望海潮", dynasty: "宋" },
+            { content: "吟赏烟霞，异日图将好景", firstHalf: "吟赏烟霞，", secondHalf: "异日图将好景", author: "柳永", title: "望海潮", dynasty: "宋" },
+            { content: "归去凤池夸，天容水色西湖好", firstHalf: "归去凤池夸，", secondHalf: "天容水色西湖好", author: "欧阳修", title: "采桑子", dynasty: "宋" },
+            { content: "云物俱鲜，鸥鹭闲眠", firstHalf: "云物俱鲜，", secondHalf: "鸥鹭闲眠", author: "欧阳修", title: "采桑子", dynasty: "宋" },
+            { content: "画船载酒西湖好，急管繁弦", firstHalf: "画船载酒西湖好，", secondHalf: "急管繁弦", author: "欧阳修", title: "采桑子", dynasty: "宋" },
+            { content: "玉盏催传，稳泛平波任醉眠", firstHalf: "玉盏催传，", secondHalf: "稳泛平波任醉眠", author: "欧阳修", title: "采桑子", dynasty: "宋" },
+            { content: "群芳过后西湖好，狼籍残红", firstHalf: "群芳过后西湖好，", secondHalf: "狼籍残红", author: "欧阳修", title: "采桑子", dynasty: "宋" },
+            { content: "飞絮濛濛，垂柳阑干尽日风", firstHalf: "飞絮濛濛，", secondHalf: "垂柳阑干尽日风", author: "欧阳修", title: "采桑子", dynasty: "宋" },
+            { content: "西湖春色归，春水绿于染", firstHalf: "西湖春色归，", secondHalf: "春水绿于染", author: "欧阳修", title: "春日西湖寄谢法曹歌", dynasty: "宋" },
+            { content: "烟雨微微，一片笙歌醉里归", firstHalf: "烟雨微微，", secondHalf: "一片笙歌醉里归", author: "欧阳修", title: "采桑子", dynasty: "宋" },
+            { content: "荷花开后西湖好，载酒来时", firstHalf: "荷花开后西湖好，", secondHalf: "载酒来时", author: "欧阳修", title: "采桑子", dynasty: "宋" },
+            { content: "四面垂杨十里荷，问云何处最花多", firstHalf: "四面垂杨十里荷，", secondHalf: "问云何处最花多", author: "苏轼", title: "浣溪沙·荷花", dynasty: "宋" },
+            { content: "午梦扁舟花底，香满西湖烟水", firstHalf: "午梦扁舟花底，", secondHalf: "香满西湖烟水", author: "杨万里", title: "昭君怨·咏荷上雨", dynasty: "宋" },
+            { content: "碧毯线头抽早稻，青罗裙带展新蒲", firstHalf: "碧毯线头抽早稻，", secondHalf: "青罗裙带展新蒲", author: "白居易", title: "春题湖上", dynasty: "唐" },
+            { content: "望海楼明照曙霞，护江堤白踏晴沙", firstHalf: "望海楼明照曙霞，", secondHalf: "护江堤白踏晴沙", author: "白居易", title: "杭州春望", dynasty: "唐" },
+            { content: "花开红树乱莺啼，草长平湖白鹭飞", firstHalf: "花开红树乱莺啼，", secondHalf: "草长平湖白鹭飞", author: "徐元杰", title: "湖上", dynasty: "宋" },
+            { content: "风日晴和人意好，夕阳箫鼓几船归", firstHalf: "风日晴和人意好，", secondHalf: "夕阳箫鼓几船归", author: "徐元杰", title: "湖上", dynasty: "宋" },
+            { content: "孤山落月趁疏钟，画舫参差柳岸风", firstHalf: "孤山落月趁疏钟，", secondHalf: "画舫参差柳岸风", author: "王洧", title: "苏堤春晓", dynasty: "宋" },
+            { content: "柳暗花明春正好，重湖雾散分林沙", firstHalf: "柳暗花明春正好，", secondHalf: "重湖雾散分林沙", author: "杨周", title: "苏堤春晓", dynasty: "明" },
+            { content: "何处黄鹤破瞑烟，一声啼过苏堤晓", firstHalf: "何处黄鹤破瞑烟，", secondHalf: "一声啼过苏堤晓", author: "杨周", title: "苏堤春晓", dynasty: "明" },
+            { content: "古来曲院枕莲塘，风过犹疑酝酿香", firstHalf: "古来曲院枕莲塘，", secondHalf: "风过犹疑酝酿香", author: "王瀛", title: "曲院风荷", dynasty: "明" },
+            { content: "薰得凌波仙子醉，锦裳零落怯新凉", firstHalf: "薰得凌波仙子醉，", secondHalf: "锦裳零落怯新凉", author: "王瀛", title: "曲院风荷", dynasty: "明" },
+            { content: "月冷寒泉凝不流，棹歌何处泛归舟", firstHalf: "月冷寒泉凝不流，", secondHalf: "棹歌何处泛归舟", author: "孙锐", title: "平湖秋月", dynasty: "宋" },
+            { content: "白蘋红蓼西风裹，一色湖光万顷秋", firstHalf: "白蘋红蓼西风裹，", secondHalf: "一色湖光万顷秋", author: "孙锐", title: "平湖秋月", dynasty: "宋" },
+            { content: "花家山下流花港，花著鱼身鱼嘬花", firstHalf: "花家山下流花港，", secondHalf: "花著鱼身鱼嘬花", author: "弘历", title: "花港观鱼", dynasty: "清" },
+            { content: "最是春光萃西子，底须秋水悟南华", firstHalf: "最是春光萃西子，", secondHalf: "底须秋水悟南华", author: "弘历", title: "花港观鱼", dynasty: "清" },
+            { content: "坡仙立塔据平湖，天影清涵水墨图", firstHalf: "坡仙立塔据平湖，", secondHalf: "天影清涵水墨图", author: "尹廷高", title: "三潭印月", dynasty: "元" },
+            { content: "夜静老龙鳞甲冷，冰壶深处浴明珠", firstHalf: "夜静老龙鳞甲冷，", secondHalf: "冰壶深处浴明珠", author: "尹廷高", title: "三潭印月", dynasty: "元" },
+            { content: "烟光山色淡溟濛，千尺浮屠兀倚空", firstHalf: "烟光山色淡溟濛，", secondHalf: "千尺浮屠兀倚空", author: "尹廷高", title: "雷峰夕照", dynasty: "元" },
+            { content: "湖上画船归欲尽，孤峰犹带夕阳红", firstHalf: "湖上画船归欲尽，", secondHalf: "孤峰犹带夕阳红", author: "尹廷高", title: "雷峰夕照", dynasty: "元" },
+            { content: "柳阴深霭玉壶清，碧浪摇空舞袖轻", firstHalf: "柳阴深霭玉壶清，", secondHalf: "碧浪摇空舞袖轻", author: "万达甫", title: "柳浪闻莺", dynasty: "明" },
+            { content: "林外莺声啼不尽，画船何处又吹笙", firstHalf: "林外莺声啼不尽，", secondHalf: "画船何处又吹笙", author: "万达甫", title: "柳浪闻莺", dynasty: "明" },
+            { content: "看山毛泽东三上北高峰，杭州一望空", firstHalf: "看山毛泽东三上北高峰，", secondHalf: "杭州一望空", author: "毛泽东", title: "看山", dynasty: "现代" },
+            { content: "飞凤亭边树，桃花岭上风", firstHalf: "飞凤亭边树，", secondHalf: "桃花岭上风", author: "毛泽东", title: "看山", dynasty: "现代" }
+        ];
+
+        let authors = ["苏轼", "白居易", "杨万里", "林逋", "欧阳修", "林升", "宋之问", "柳永", "徐元杰", "王洧", "杨周", "王瀛", "孙锐", "弘历", "尹廷高", "万达甫", "毛泽东", "杜甫", "王安石", "辛弃疾", "李清照", "孟浩然", "王之涣", "柳宗元", "张继", "王勃", "元稹", "李煜", "白朴", "王维", "刘禹锡", "李商隐", "杜牧"];
+        let fillOptions = ["山色空蒙雨亦奇", "淡妆浓抹总相宜", "白雨跳珠乱入船", "望湖楼下水如天", "风光不与四时同", "映日荷花别样红", "水面初平云脚低", "谁家新燕啄春泥", "乱花渐欲迷人眼", "浅草才能没马蹄", "最爱湖东行不足", "绿杨阴里白沙堤", "乱峰围绕水平铺", "松排山面千重翠", "月点波心一颗珠", "一半勾留是此湖", "暗香浮动月黄昏", "绿水逶迤", "芳草长堤", "隐隐笙歌处处随", "花坞苹汀", "十顷波平", "野岸无人舟自横", "西湖歌舞几时休", "暖风熏得游人醉", "直把杭州作汴州", "门对浙江潮", "三吴都会", "钱塘自古繁华", "有三秋桂子", "十里荷花", "烟柳画桥", "风帘翠幕", "市列珠玑", "户盈罗绮", "竞豪奢", "有三秋桂子", "菱歌泛夜", "嘻嘻钓叟莲娃", "乘醉听箫鼓", "吟赏烟霞", "异日图将好景", "天容水色西湖好", "云物俱鲜", "鸥鹭闲眠", "急管繁弦", "玉盏催传", "稳泛平波任醉眠", "狼籍残红", "飞絮濛濛", "垂柳阑干尽日风", "春水绿于染", "烟雨微微", "一片笙歌醉里归", "载酒来时", "四面垂杨十里荷", "问云何处最花多", "香满西湖烟水", "碧毯线头抽早稻", "青罗裙带展新蒲", "望海楼明照曙霞", "护江堤白踏晴沙", "草长平湖白鹭飞", "风日晴和人意好", "夕阳箫鼓几船归", "孤山落月趁疏钟", "画舫参差柳岸风", "柳暗花明春正好", "重湖雾散分林沙", "何处黄鹤破瞑烟", "一声啼过苏堤晓", "风过犹疑酝酿香", "薰得凌波仙子醉", "锦裳零落怯新凉", "月冷寒泉凝不流", "棹歌何处泛归舟", "白蘋红蓼西风裹", "一色湖光万顷秋", "花著鱼身鱼嘬花", "最是春光萃西子", "底须秋水悟南华", "天影清涵水墨图", "夜静老龙鳞甲冷", "冰壶深处浴明珠", "烟光山色淡溟濛", "千尺浮屠兀倚空", "湖上画船归欲尽", "孤峰犹带夕阳红", "柳阴深霭玉壶清", "碧浪摇空舞袖轻", "林外莺声啼不尽", "画船何处又吹笙", "杭州一望空", "飞凤亭边树", "桃花岭上风"];
+        let titles = ["饮湖上初晴后雨", "望湖楼醉书", "六月二十七日望湖楼醉书", "晓出净慈寺送林子方", "钱塘湖春行", "春题湖上", "山园小梅", "采桑子", "题临安邸", "灵隐寺", "望海潮", "春日西湖寄谢法曹歌", "浣溪沙·荷花", "昭君怨·咏荷上雨", "杭州春望", "湖上", "苏堤春晓", "曲院风荷", "平湖秋月", "花港观鱼", "三潭印月", "雷峰夕照", "柳浪闻莺", "看山"];
+
+        const difficultyOptions = {
+            easy: 2,
+            medium: 3,
+            hard: 4
+        };
+
+        const timerConfig = {
+            easy: 20,
+            medium: 15,
+            hard: 10
+        };
+
+        let gameState = {
+            score: 0,
+            combo: 0,
+            maxCombo: 0,
+            answered: 0,
+            totalQuestions: 20,
+            correctCount: 0,
+            wrongCount: 0,
+            timeBonus: 0,
+            difficulty: 'medium',
+            questionType: 'author',
+            currentPoem: null,
+            currentOptions: [],
+            timerInterval: null,
+            timeLeft: 15,
+            answeredPoems: [],
+            isAnswered: false
+        };
+
+        let favorites = JSON.parse(localStorage.getItem('poemFavorites')) || [];
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function setDifficulty(difficulty) {
+            gameState.difficulty = difficulty;
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.classList.toggle('selected', btn.dataset.difficulty === difficulty);
+            });
+        }
+
+        function setQuestionType(type) {
+            gameState.questionType = type;
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.type === type);
+            });
+        }
+
+        function handleKeyboard(event) {
+            const activeScreen = document.querySelector('.screen.active');
+            if (!activeScreen || activeScreen.id !== 'gameScreen') return;
+            if (gameState.isAnswered) {
+                if (event.key === 'Enter' && document.getElementById('nextBtn').style.display !== 'none') {
+                    const nextBtn = document.getElementById('nextBtn');
+                    nextBtn.classList.add('key-selected');
+                    setTimeout(() => nextBtn.classList.remove('key-selected'), 150);
+                    nextQuestion();
+                }
+                return;
+            }
+
+            const key = event.key;
+            if (key >= '1' && key <= '9') {
+                const index = parseInt(key) - 1;
+                if (gameState.optionElements && gameState.optionElements[index]) {
+                    const btn = gameState.optionElements[index];
+                    btn.classList.add('key-selected');
+                    setTimeout(() => btn.classList.remove('key-selected'), 150);
+                    btn.click();
+                }
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyboard);
+
+        function startGame() {
+            gameState = {
+                score: 0,
+                combo: 0,
+                maxCombo: 0,
+                answered: 0,
+                totalQuestions: 20,
+                correctCount: 0,
+                wrongCount: 0,
+                timeBonus: 0,
+                difficulty: gameState.difficulty,
+                questionType: gameState.questionType,
+                currentQuestionType: 'author',
+                currentPoem: null,
+                currentOptions: [],
+                timerInterval: null,
+                timeLeft: timerConfig[gameState.difficulty],
+                answeredPoems: [],
+                isAnswered: false
+            };
+
+            updateDisplay();
+            showScreen('gameScreen');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (gameState.answered >= gameState.totalQuestions) {
+                endGame();
+                return;
+            }
+
+            gameState.isAnswered = false;
+            const availablePoems = poems.filter(p => !gameState.answeredPoems.includes(p.content));
+
+            if (availablePoems.length === 0) {
+                gameState.answeredPoems = [];
+            }
+
+            const randomIndex = Math.floor(Math.random() * availablePoems.length);
+            gameState.currentPoem = availablePoems[randomIndex];
+            gameState.answeredPoems.push(gameState.currentPoem.content);
+
+            let currentQuestionType = gameState.questionType;
+            if (currentQuestionType === 'mixed') {
+                const types = ['author', 'title', 'fill'];
+                currentQuestionType = types[Math.floor(Math.random() * types.length)];
+            }
+            gameState.currentQuestionType = currentQuestionType;
+
+            const optionCount = difficultyOptions[gameState.difficulty];
+            let questionText, correctAnswer, optionPool, displayContent;
+
+            if (currentQuestionType === 'fill') {
+                questionText = '请填出下句：';
+                correctAnswer = gameState.currentPoem.secondHalf;
+                optionPool = fillOptions;
+                displayContent = gameState.currentPoem.firstHalf + '__________';
+            } else if (currentQuestionType === 'author') {
+                questionText = '以上诗句的作者是？';
+                correctAnswer = gameState.currentPoem.author;
+                optionPool = authors;
+                displayContent = gameState.currentPoem.content;
+            } else {
+                questionText = '以上诗句的题目是？';
+                correctAnswer = gameState.currentPoem.title;
+                optionPool = titles;
+                displayContent = gameState.currentPoem.content;
+            }
+
+            const optionsSet = new Set([correctAnswer]);
+
+            while (optionsSet.size < optionCount) {
+                const randomOpt = optionPool[Math.floor(Math.random() * optionPool.length)];
+                if (randomOpt !== correctAnswer) {
+                    optionsSet.add(randomOpt);
+                }
+            }
+
+            gameState.currentOptions = Array.from(optionsSet);
+            shuffleArray(gameState.currentOptions);
+
+            const poemContent = document.getElementById('poemContent');
+            const poemQuestion = document.getElementById('poemQuestion');
+            const optionsGrid = document.getElementById('optionsGrid');
+            const feedback = document.getElementById('feedback');
+            const nextBtn = document.getElementById('nextBtn');
+            const favoriteBtn = document.getElementById('favoriteBtn');
+
+            poemContent.textContent = displayContent;
+            poemContent.style.animation = 'none';
+            poemContent.offsetHeight;
+            poemContent.style.animation = 'scrollUnfold 0.8s ease-out';
+
+            poemQuestion.textContent = questionText;
+            feedback.className = 'feedback';
+            feedback.style.display = 'none';
+            nextBtn.style.display = 'none';
+            favoriteBtn.style.display = 'block';
+
+            optionsGrid.innerHTML = '';
+            gameState.optionElements = [];
+            gameState.currentOptions.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = `${option} (数字${index + 1})`;
+                btn.style.animationDelay = `${index * 0.1}s`;
+                btn.onclick = () => selectAnswer(option, btn);
+                btn.dataset.index = index;
+                optionsGrid.appendChild(btn);
+                gameState.optionElements.push(btn);
+            });
+
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(gameState.timerInterval);
+            gameState.timeLeft = timerConfig[gameState.difficulty];
+            
+            const timerDisplay = document.getElementById('timerDisplay');
+            const timerProgress = document.getElementById('timerProgress');
+            const maxTime = timerConfig[gameState.difficulty];
+
+            timerProgress.style.width = '100%';
+            timerDisplay.textContent = gameState.timeLeft;
+
+            gameState.timerInterval = setInterval(() => {
+                gameState.timeLeft -= 0.1;
+                timerDisplay.textContent = Math.ceil(gameState.timeLeft);
+                timerProgress.style.width = `${(gameState.timeLeft / maxTime) * 100}%`;
+
+                if (gameState.timeLeft <= 0) {
+                    clearInterval(gameState.timerInterval);
+                    if (!gameState.isAnswered) {
+                        timeUp();
+                    }
+                }
+            }, 100);
+        }
+
+        function timeUp() {
+            gameState.isAnswered = true;
+            gameState.wrongCount++;
+            gameState.combo = 0;
+
+            const correctAnswer = gameState.questionType === 'author' ? gameState.currentPoem.author : gameState.currentPoem.title;
+            
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correctAnswer) {
+                    btn.classList.add('correct');
+                }
+            });
+
+            showFeedback(false, correctAnswer);
+            updateDisplay();
+        }
+
+        function selectAnswer(option, btnElement) {
+            if (gameState.isAnswered) return;
+
+            gameState.isAnswered = true;
+            clearInterval(gameState.timerInterval);
+
+            let correctAnswer;
+            const qType = gameState.currentQuestionType;
+            if (qType === 'fill') {
+                correctAnswer = gameState.currentPoem.secondHalf;
+            } else if (qType === 'author') {
+                correctAnswer = gameState.currentPoem.author;
+            } else {
+                correctAnswer = gameState.currentPoem.title;
+            }
+            const isCorrect = option === correctAnswer;
+
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correctAnswer) {
+                    btn.classList.add('correct');
+                }
+            });
+
+            if (isCorrect) {
+                gameState.correctCount++;
+                gameState.combo++;
+                if (gameState.combo > gameState.maxCombo) {
+                    gameState.maxCombo = gameState.combo;
+                }
+
+                let points = 10;
+                let bonusText = '';
+
+                if (gameState.combo >= 3) {
+                    points += 5;
+                    bonusText = `+${points}分 (连击+5)`;
+                } else {
+                    bonusText = `+${points}分`;
+                }
+
+                const timeBonus = Math.floor(gameState.timeLeft * 2);
+                points += timeBonus;
+                gameState.timeBonus += timeBonus;
+                gameState.score += points;
+
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                scoreDisplay.classList.add('highlight');
+                setTimeout(() => scoreDisplay.classList.remove('highlight'), 500);
+
+                const bonusTextEl = document.getElementById('bonusText');
+                bonusTextEl.textContent = bonusText + (timeBonus > 0 ? ` +${timeBonus}计时` : '');
+                setTimeout(() => bonusTextEl.textContent = '', 2000);
+
+                btnElement.classList.add('correct');
+            } else {
+                gameState.wrongCount++;
+                gameState.combo = 0;
+                btnElement.classList.add('wrong');
+            }
+
+            gameState.answered++;
+            showFeedback(isCorrect, correctAnswer);
+            updateDisplay();
+        }
+
+        function showFeedback(isCorrect, correctAnswer) {
+            const feedback = document.getElementById('feedback');
+            const feedbackText = document.getElementById('feedbackText');
+            const feedbackDetail = document.getElementById('feedbackDetail');
+            const nextBtn = document.getElementById('nextBtn');
+            const qType = gameState.currentQuestionType;
+
+            if (isCorrect) {
+                feedback.className = 'feedback correct';
+                feedbackText.textContent = '回答正确！';
+                if (qType === 'fill') {
+                    feedbackDetail.textContent = `完整诗句：${gameState.currentPoem.content}`;
+                } else {
+                    feedbackDetail.textContent = `恭喜你答对了！`;
+                }
+            } else {
+                feedback.className = 'feedback wrong';
+                feedbackText.textContent = '回答错误';
+                if (qType === 'fill') {
+                    feedbackDetail.innerHTML = `正确下句是：${correctAnswer}<br><span style="font-size:0.85em;color:#666;">完整诗句：${gameState.currentPoem.content}</span>`;
+                } else {
+                    feedbackDetail.textContent = `正确答案是：${correctAnswer}`;
+                }
+            }
+
+            feedback.style.display = 'block';
+            nextBtn.style.display = 'block';
+            document.getElementById('favoriteBtn').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            loadQuestion();
+        }
+
+        function updateDisplay() {
+            document.getElementById('scoreDisplay').textContent = gameState.score;
+            document.getElementById('comboDisplay').textContent = gameState.combo;
+            document.getElementById('answeredDisplay').textContent = gameState.answered;
+            document.getElementById('remainingDisplay').textContent = gameState.totalQuestions - gameState.answered;
+        }
+
+        function endGame() {
+            clearInterval(gameState.timerInterval);
+
+            document.getElementById('finalScore').textContent = gameState.score;
+            document.getElementById('correctCount').textContent = gameState.correctCount;
+            document.getElementById('wrongCount').textContent = gameState.wrongCount;
+            document.getElementById('maxCombo').textContent = gameState.maxCombo;
+            document.getElementById('timeBonus').textContent = gameState.timeBonus;
+
+            saveToLeaderboard(gameState.score);
+
+            showScreen('endScreen');
+            renderEndLeaderboard();
+        }
+
+        function saveToLeaderboard(score) {
+            let leaderboard = JSON.parse(localStorage.getItem('poemLeaderboard')) || [];
+            leaderboard.push({
+                score: score,
+                date: new Date().toLocaleDateString(),
+                difficulty: gameState.difficulty
+            });
+            leaderboard.sort((a, b) => b.score - a.score);
+            leaderboard = leaderboard.slice(0, 10);
+            localStorage.setItem('poemLeaderboard', JSON.stringify(leaderboard));
+        }
+
+        function renderEndLeaderboard() {
+            const leaderboard = JSON.parse(localStorage.getItem('poemLeaderboard')) || [];
+            const container = document.getElementById('endLeaderboard');
+
+            if (leaderboard.length === 0) {
+                container.innerHTML = '<p class="empty-message">暂无记录</p>';
+                return;
+            }
+
+            container.innerHTML = leaderboard.slice(0, 5).map((item, index) => `
+                <div class="leaderboard-item">
+                    <span class="leaderboard-rank">${index + 1}.</span>
+                    <span>${item.score}分</span>
+                    <span style="color: var(--border-brown); font-size: 0.85em;">${item.date}</span>
+                </div>
+            `).join('');
+        }
+
+        function showLeaderboard() {
+            const leaderboard = JSON.parse(localStorage.getItem('poemLeaderboard')) || [];
+            const container = document.getElementById('leaderboardContent');
+
+            if (leaderboard.length === 0) {
+                container.innerHTML = '<p class="empty-message">暂无记录</p>';
+            } else {
+                container.innerHTML = leaderboard.map((item, index) => `
+                    <div class="leaderboard-item">
+                        <span class="leaderboard-rank">${index + 1}.</span>
+                        <span class="leaderboard-score">${item.score}分</span>
+                        <span style="color: var(--border-brown);">${item.date}</span>
+                    </div>
+                `).join('');
+            }
+
+            showScreen('leaderboardScreen');
+        }
+
+        function addToFavorites() {
+            if (!gameState.currentPoem) return;
+
+            const poemKey = gameState.currentPoem.content;
+            const exists = favorites.some(f => f.content === poemKey);
+
+            if (exists) {
+                favorites = favorites.filter(f => f.content !== poemKey);
+                localStorage.setItem('poemFavorites', JSON.stringify(favorites));
+                document.getElementById('favoriteBtn').textContent = '收藏此诗';
+            } else {
+                favorites.push({
+                    content: gameState.currentPoem.content,
+                    author: gameState.currentPoem.author,
+                    title: gameState.currentPoem.title,
+                    dynasty: gameState.currentPoem.dynasty
+                });
+                localStorage.setItem('poemFavorites', JSON.stringify(favorites));
+                document.getElementById('favoriteBtn').textContent = '已收藏';
+            }
+        }
+
+        function showFavorites() {
+            const container = document.getElementById('favoritesList');
+
+            if (favorites.length === 0) {
+                container.innerHTML = '<p class="empty-message">暂无收藏的诗句</p>';
+            } else {
+                container.innerHTML = favorites.map((poem, index) => `
+                    <div class="favorite-item">
+                        <div class="favorite-poem">${poem.content}</div>
+                        <div class="favorite-info">${poem.dynasty}·${poem.author}《${poem.title}》</div>
+                        <div class="favorite-actions">
+                            <button class="icon-btn" onclick="removeFavorite(${index})">删除</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            showScreen('favoritesScreen');
+        }
+
+        function removeFavorite(index) {
+            favorites.splice(index, 1);
+            localStorage.setItem('poemFavorites', JSON.stringify(favorites));
+            showFavorites();
+        }
+
+        function restartGame() {
+            startGame();
+        }
+
+        function goToStart() {
+            showScreen('startScreen');
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        window.onload = function() {
+            updateDisplay();
+        };
+    </script>
+</body>
+</html>
