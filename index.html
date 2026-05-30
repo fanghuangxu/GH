@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>古典诗句问答</title>
-    <style>
+        <style>
         * {
             margin: 0;
             padding: 0;
@@ -12,18 +12,28 @@
         }
 
         :root {
-            --ink-black: #2c2c2c;
-            --paper-white: #f5f0e6;
-            --cinnabar-red: #c73e3a;
-            --gold-accent: #b8860b;
-            --light-paper: #faf8f3;
-            --dark-red: #8b0000;
-            --border-brown: #8b7355;
+            --primary-blue: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary-blue: #60a5fa;
+            --accent-cyan: #06b6d4;
+            --success-green: #10b981;
+            --danger-red: #ef4444;
+            --warning-orange: #f59e0b;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
         }
 
         body {
-            font-family: "SimSun", "宋体", "Noto Serif SC", serif;
-            background: var(--ink-black);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 50%, var(--gray-700) 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -33,26 +43,20 @@
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             min-height: 600px;
             position: relative;
         }
 
         .screen {
             display: none;
-            background: var(--paper-white);
-            border-radius: 8px;
+            background: white;
+            border-radius: 24px;
             padding: 40px;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            background-image: 
-                repeating-linear-gradient(
-                    0deg,
-                    transparent,
-                    transparent 30px,
-                    rgba(139, 115, 85, 0.1) 30px,
-                    rgba(139, 115, 85, 0.1) 31px
-                );
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
             animation: fadeIn 0.6s ease-out;
         }
 
@@ -82,9 +86,9 @@
         }
 
         @keyframes correctFlash {
-            0% { background-color: var(--paper-white); }
-            50% { background-color: rgba(199, 62, 58, 0.2); }
-            100% { background-color: var(--paper-white); }
+            0% { background-color: white; }
+            50% { background-color: rgba(16, 185, 129, 0.1); }
+            100% { background-color: white; }
         }
 
         @keyframes wrongShake {
@@ -94,97 +98,66 @@
         }
 
         @keyframes scoreUp {
-            0% { transform: scale(1); color: var(--ink-black); }
-            50% { transform: scale(1.3); color: var(--cinnabar-red); }
-            100% { transform: scale(1); color: var(--ink-black); }
+            0% { transform: scale(1); color: var(--gray-800); }
+            50% { transform: scale(1.3); color: var(--success-green); }
+            100% { transform: scale(1); color: var(--gray-800); }
         }
 
-        .ornament-border {
-            position: absolute;
-            border: 3px solid var(--border-brown);
-            pointer-events: none;
+        .ornament-border, .corner-decoration {
+            display: none;
         }
-
-        .ornament-border.top-left {
-            top: 10px;
-            left: 10px;
-            right: 60%;
-            bottom: 60%;
-            border-right: none;
-            border-bottom: none;
-            border-top-left-radius: 8px;
-        }
-
-        .ornament-border.bottom-right {
-            top: 60%;
-            left: 60%;
-            right: 10px;
-            bottom: 10px;
-            border-left: none;
-            border-top: none;
-            border-bottom-right-radius: 8px;
-        }
-
-        .corner-decoration {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--cinnabar-red);
-        }
-
-        .corner-decoration.tl { top: 5px; left: 5px; border-right: none; border-bottom: none; }
-        .corner-decoration.tr { top: 5px; right: 5px; border-left: none; border-bottom: none; }
-        .corner-decoration.bl { bottom: 5px; left: 5px; border-right: none; border-top: none; }
-        .corner-decoration.br { bottom: 5px; right: 5px; border-left: none; border-top: none; }
 
         h1 {
             text-align: center;
-            color: var(--ink-black);
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             font-size: 2.5em;
             margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            letter-spacing: 0.2em;
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
 
         h2 {
             text-align: center;
-            color: var(--ink-black);
+            color: var(--gray-800);
             font-size: 1.8em;
             margin-bottom: 20px;
-            letter-spacing: 0.15em;
+            font-weight: 600;
         }
 
         .subtitle {
             text-align: center;
-            color: var(--border-brown);
+            color: var(--gray-500);
             font-size: 1.1em;
             margin-bottom: 40px;
-            font-style: italic;
         }
 
         .btn {
             display: block;
             width: 100%;
-            max-width: 280px;
+            max-width: 320px;
             margin: 15px auto;
-            padding: 15px 30px;
-            font-size: 1.2em;
+            padding: 16px 32px;
+            font-size: 1.1em;
+            font-weight: 600;
             font-family: inherit;
-            color: var(--paper-white);
-            background: var(--cinnabar-red);
-            border: 2px solid var(--dark-red);
-            border-radius: 4px;
+            color: white;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+            border: none;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            letter-spacing: 0.1em;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -1px rgba(59, 130, 246, 0.06);
         }
 
         .btn:hover {
-            background: var(--dark-red);
+            background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3), 0 4px 6px -2px rgba(59, 130, 246, 0.1);
         }
 
         .btn:active {
@@ -192,78 +165,76 @@
         }
 
         .btn-secondary {
-            background: var(--border-brown);
-            border-color: #6b5344;
+            background: linear-gradient(135deg, var(--gray-600), var(--gray-700));
         }
 
         .btn-secondary:hover {
-            background: #6b5344;
+            background: linear-gradient(135deg, var(--gray-500), var(--gray-600));
         }
 
         .btn-small {
-            padding: 8px 16px;
+            padding: 10px 20px;
             font-size: 0.9em;
-            max-width: 150px;
+            max-width: 180px;
         }
 
         .difficulty-selector {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 16px;
             margin: 30px 0;
             flex-wrap: wrap;
         }
 
         .difficulty-btn {
-            padding: 12px 25px;
-            font-size: 1.1em;
-            border: 2px solid var(--border-brown);
-            background: var(--paper-white);
-            color: var(--ink-black);
+            padding: 14px 28px;
+            font-size: 1.0em;
+            font-weight: 500;
+            border: 2px solid var(--gray-300);
+            background: white;
+            color: var(--gray-700);
             cursor: pointer;
             transition: all 0.3s ease;
-            border-radius: 4px;
+            border-radius: 12px;
         }
 
         .difficulty-btn:hover {
-            border-color: var(--cinnabar-red);
-            color: var(--cinnabar-red);
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
         }
 
         .difficulty-btn.selected {
-            background: var(--cinnabar-red);
-            color: var(--paper-white);
-            border-color: var(--cinnabar-red);
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+            color: white;
+            border-color: var(--primary-blue);
         }
 
         .stats-bar {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 15px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
             margin-bottom: 30px;
-            padding: 15px;
-            background: rgba(139, 115, 85, 0.1);
-            border-radius: 8px;
-            border: 1px solid rgba(139, 115, 85, 0.3);
+            padding: 24px;
+            background: var(--gray-50);
+            border-radius: 16px;
+            border: 1px solid var(--gray-200);
         }
 
         .stat-item {
             text-align: center;
-            flex: 1;
-            min-width: 80px;
         }
 
         .stat-label {
             font-size: 0.85em;
-            color: var(--border-brown);
-            margin-bottom: 5px;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+            font-weight: 500;
         }
 
         .stat-value {
-            font-size: 1.5em;
-            color: var(--ink-black);
-            font-weight: bold;
+            font-size: 1.8em;
+            color: var(--gray-800);
+            font-weight: 700;
         }
 
         .stat-value.highlight {
@@ -271,367 +242,365 @@
         }
 
         .poem-scroll {
-            background: linear-gradient(to bottom, #e8e0d0, var(--paper-white), #e8e0d0);
-            border: 8px solid #8b7355;
-            border-radius: 4px;
+            background: linear-gradient(180deg, var(--gray-50) 0%, white 50%, var(--gray-50) 100%);
+            border: 2px solid var(--gray-200);
+            border-radius: 20px;
             padding: 40px;
             margin: 20px 0;
             position: relative;
             box-shadow: 
-                inset 0 0 30px rgba(139, 115, 85, 0.2),
-                0 10px 30px rgba(0, 0, 0, 0.1);
+                0 10px 15px -3px rgba(0, 0, 0, 0.05),
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
             animation: scrollUnfold 0.8s ease-out;
         }
 
         .poem-scroll::before,
         .poem-scroll::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            height: 20px;
-            background: linear-gradient(to bottom, #6b5344, #8b7355, #6b5344);
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            display: none;
         }
-
-        .poem-scroll::before { top: -15px; }
-        .poem-scroll::after { bottom: -15px; }
 
         .poem-content {
             font-size: 1.8em;
             text-align: center;
-            color: var(--ink-black);
+            color: var(--gray-800);
             line-height: 2;
-            margin-bottom: 15px;
-            letter-spacing: 0.15em;
+            margin-bottom: 16px;
+            font-weight: 500;
         }
 
         .poem-question {
             text-align: center;
             font-size: 1.2em;
-            color: var(--border-brown);
+            color: var(--gray-600);
             margin-top: 20px;
+            font-weight: 500;
         }
 
         .options-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 16px;
             margin: 30px 0;
         }
 
         .option-btn {
-            padding: 18px 15px;
+            padding: 20px 16px;
             font-size: 1.1em;
+            font-weight: 500;
             font-family: inherit;
-            background: var(--paper-white);
-            border: 2px solid var(--border-brown);
-            color: var(--ink-black);
+            background: white;
+            border: 2px solid var(--gray-300);
+            color: var(--gray-700);
             cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 4px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px;
             position: relative;
         }
 
         .option-btn:hover:not(:disabled) {
-            border-color: var(--cinnabar-red);
-            color: var(--cinnabar-red);
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(139, 115, 85, 0.2);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
         }
 
         .option-btn:disabled {
             cursor: not-allowed;
-            opacity: 0.7;
+            opacity: 0.6;
         }
 
         .option-btn.correct {
-            background: rgba(199, 62, 58, 0.2);
-            border-color: var(--cinnabar-red);
-            color: var(--cinnabar-red);
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success-green);
+            color: var(--success-green);
             animation: pulse 0.5s ease;
         }
 
         .option-btn.wrong {
-            background: rgba(0, 0, 0, 0.05);
-            border-color: #999;
-            color: #999;
+            background: rgba(239, 68, 68, 0.05);
+            border-color: var(--gray-400);
+            color: var(--gray-500);
             animation: wrongShake 0.5s ease;
         }
 
         .option-btn.key-selected {
-            border-color: var(--cinnabar-red);
-            background: rgba(199, 62, 58, 0.15);
+            border-color: var(--primary-blue);
+            background: rgba(59, 130, 246, 0.1);
             transform: scale(1.02);
-            box-shadow: 0 0 15px rgba(199, 62, 58, 0.4);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
         }
 
         .btn.key-selected {
             transform: scale(0.95);
-            box-shadow: 0 0 10px rgba(139, 115, 85, 0.5);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
         }
 
         .timer-bar {
-            height: 6px;
-            background: rgba(139, 115, 85, 0.2);
-            border-radius: 3px;
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
             margin: 20px 0;
             overflow: hidden;
         }
 
         .timer-progress {
             height: 100%;
-            background: linear-gradient(to right, var(--cinnabar-red), var(--gold-accent));
-            border-radius: 3px;
+            background: linear-gradient(to right, var(--danger-red), var(--warning-orange));
+            border-radius: 4px;
             transition: width 0.1s linear;
         }
 
         .timer-text {
             text-align: center;
             font-size: 1.1em;
-            color: var(--border-brown);
+            color: var(--gray-600);
             margin-bottom: 10px;
+            font-weight: 500;
         }
 
         .feedback {
             text-align: center;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-            font-size: 1.2em;
-            display: none;
+            padding: 24px;
+            border-radius: 16px;
+            margin: 24px 0;
+            animation: fadeIn 0.3s ease;
         }
 
         .feedback.correct {
-            display: block;
-            background: rgba(199, 62, 58, 0.1);
-            border: 1px solid var(--cinnabar-red);
-            color: var(--cinnabar-red);
-            animation: correctFlash 0.5s ease;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border: 2px solid var(--success-green);
         }
 
         .feedback.wrong {
-            display: block;
-            background: rgba(0, 0, 0, 0.05);
-            border: 1px solid #999;
-            color: #666;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+            border: 2px solid var(--danger-red);
+        }
+
+        .feedback-text {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feedback.correct .feedback-text {
+            color: var(--success-green);
+        }
+
+        .feedback.wrong .feedback-text {
+            color: var(--danger-red);
         }
 
         .feedback-detail {
-            font-size: 0.9em;
-            margin-top: 10px;
-            color: var(--border-brown);
+            font-size: 1.0em;
+            color: var(--gray-600);
+            margin-top: 8px;
         }
 
-        .result-screen {
-            text-align: center;
-        }
-
-        .final-score {
-            font-size: 4em;
-            color: var(--cinnabar-red);
-            margin: 30px 0;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .result-stats {
+        .actions {
             display: flex;
             justify-content: center;
-            gap: 40px;
-            margin: 30px 0;
-            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 24px;
         }
 
-        .result-stat {
+        .favorite-btn {
+            background: linear-gradient(135deg, var(--warning-orange), #ea580c);
+        }
+
+        .favorite-btn:hover {
+            background: linear-gradient(135deg, #fbbf24, var(--warning-orange));
+        }
+
+        .game-info {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--gray-50);
+            border-radius: 16px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .game-info h3 {
+            font-size: 1.2em;
+            color: var(--gray-700);
+            margin-bottom: 16px;
+        }
+
+        .game-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .game-stat {
             text-align: center;
         }
 
-        .result-stat-value {
+        .game-stat-value {
             font-size: 2em;
-            color: var(--ink-black);
+            font-weight: 700;
+            color: var(--primary-blue);
         }
 
-        .result-stat-label {
+        .game-stat-label {
             font-size: 0.9em;
-            color: var(--border-brown);
+            color: var(--gray-500);
+            margin-top: 4px;
         }
 
         .leaderboard {
-            margin: 30px 0;
+            background: var(--gray-50);
+            border-radius: 16px;
             padding: 20px;
-            background: rgba(139, 115, 85, 0.1);
-            border-radius: 8px;
-            border: 1px solid rgba(139, 115, 85, 0.3);
+            margin-top: 20px;
         }
 
         .leaderboard h3 {
+            font-size: 1.2em;
+            color: var(--gray-700);
+            margin-bottom: 16px;
             text-align: center;
-            margin-bottom: 15px;
-            color: var(--ink-black);
+        }
+
+        .leaderboard-list {
+            list-style: none;
         }
 
         .leaderboard-item {
             display: flex;
             justify-content: space-between;
-            padding: 10px 15px;
-            border-bottom: 1px dashed rgba(139, 115, 85, 0.3);
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid var(--gray-200);
+            transition: background 0.2s;
         }
 
         .leaderboard-item:last-child {
             border-bottom: none;
         }
 
-        .leaderboard-rank {
-            color: var(--cinnabar-red);
-            font-weight: bold;
-            width: 30px;
+        .leaderboard-item:hover {
+            background: var(--gray-100);
         }
 
+        .leaderboard-rank {
+            font-weight: 700;
+            color: var(--primary-blue);
+            min-width: 40px;
+        }
+
+        .leaderboard-rank.gold { color: #fbbf24; }
+        .leaderboard-rank.silver { color: #9ca3af; }
+        .leaderboard-rank.bronze { color: #d97706; }
+
         .leaderboard-score {
-            color: var(--ink-black);
-            font-weight: bold;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .leaderboard-date {
+            font-size: 0.85em;
+            color: var(--gray-400);
         }
 
         .favorites-section {
-            margin: 30px 0;
-            padding: 20px;
-            background: rgba(139, 115, 85, 0.1);
-            border-radius: 8px;
-            border: 1px solid rgba(139, 115, 85, 0.3);
+            margin-top: 24px;
         }
 
         .favorites-section h3 {
+            font-size: 1.2em;
+            color: var(--gray-700);
+            margin-bottom: 16px;
             text-align: center;
-            margin-bottom: 15px;
-            color: var(--ink-black);
+        }
+
+        .favorites-list {
+            list-style: none;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .favorite-item {
-            padding: 15px;
-            margin: 10px 0;
-            background: var(--paper-white);
-            border-radius: 4px;
-            border-left: 3px solid var(--cinnabar-red);
+            padding: 16px;
+            background: var(--gray-50);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s;
         }
 
-        .favorite-poem {
+        .favorite-item:hover {
+            border-color: var(--primary-blue);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        }
+
+        .favorite-content {
             font-size: 1.1em;
-            color: var(--ink-black);
-            margin-bottom: 5px;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+            line-height: 1.6;
         }
 
-        .favorite-info {
-            font-size: 0.85em;
-            color: var(--border-brown);
+        .favorite-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: var(--gray-500);
         }
 
         .favorite-actions {
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
-            margin-top: 10px;
+            margin-top: 12px;
+            gap: 8px;
         }
 
-        .icon-btn {
-            padding: 5px 10px;
-            font-size: 0.85em;
-            border: 1px solid var(--border-brown);
-            background: var(--paper-white);
-            color: var(--border-brown);
-            cursor: pointer;
-            border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-
-        .icon-btn:hover {
-            border-color: var(--cinnabar-red);
-            color: var(--cinnabar-red);
+        .btn-icon {
+            padding: 8px 16px;
+            font-size: 0.9em;
+            border-radius: 8px;
+            max-width: none;
+            width: auto;
         }
 
         .empty-message {
             text-align: center;
-            color: var(--border-brown);
-            font-style: italic;
-            padding: 20px;
+            padding: 40px;
+            color: var(--gray-400);
+            font-size: 1.1em;
         }
 
-        .tab-bar {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
+        .result-screen {
+            text-align: center;
         }
 
-        .tab-btn {
-            padding: 10px 20px;
-            font-size: 1em;
-            font-family: inherit;
-            border: 2px solid var(--border-brown);
-            background: var(--paper-white);
-            color: var(--ink-black);
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.3s ease;
+        .result-screen h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
         }
 
-        .tab-btn.active {
-            background: var(--cinnabar-red);
-            color: var(--paper-white);
-            border-color: var(--cinnabar-red);
+        .result-screen .btn {
+            margin-top: 30px;
         }
 
-        .tab-content {
-            display: none;
-        }
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
 
-        .tab-content.active {
-            display: block;
-        }
-
-        .game-controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .question-type-toggle {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .toggle-btn {
-            padding: 10px 20px;
-            font-size: 0.95em;
-            font-family: inherit;
-            border: 2px solid var(--border-brown);
-            background: var(--paper-white);
-            color: var(--ink-black);
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .toggle-btn.active {
-            background: var(--border-brown);
-            color: var(--paper-white);
-            border-color: var(--border-brown);
-        }
-
-        .bonus-text {
-            color: var(--gold-accent);
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        @media (max-width: 600px) {
             .screen {
-                padding: 25px 20px;
+                padding: 24px;
+                border-radius: 16px;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 16px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
             }
 
             h1 {
@@ -639,31 +608,19 @@
             }
 
             h2 {
-                font-size: 1.4em;
+                font-size: 1.5em;
             }
 
             .poem-content {
                 font-size: 1.4em;
             }
 
-            .options-grid {
+            .game-stats {
                 grid-template-columns: 1fr;
-            }
-
-            .result-stats {
-                gap: 20px;
-            }
-
-            .difficulty-selector {
-                gap: 10px;
-            }
-
-            .difficulty-btn {
-                padding: 10px 15px;
-                font-size: 1em;
             }
         }
     </style>
+
 </head>
 <body>
     <div class="container">
@@ -913,6 +870,805 @@
         let fillOptions = ["山色空蒙雨亦奇", "淡妆浓抹总相宜", "白雨跳珠乱入船", "望湖楼下水如天", "风光不与四时同", "映日荷花别样红", "水面初平云脚低", "谁家新燕啄春泥", "乱花渐欲迷人眼", "浅草才能没马蹄", "最爱湖东行不足", "绿杨阴里白沙堤", "乱峰围绕水平铺", "松排山面千重翠", "月点波心一颗珠", "一半勾留是此湖", "暗香浮动月黄昏", "绿水逶迤", "芳草长堤", "隐隐笙歌处处随", "花坞苹汀", "十顷波平", "野岸无人舟自横", "西湖歌舞几时休", "暖风熏得游人醉", "直把杭州作汴州", "门对浙江潮", "三吴都会", "钱塘自古繁华", "有三秋桂子", "十里荷花", "烟柳画桥", "风帘翠幕", "市列珠玑", "户盈罗绮", "竞豪奢", "有三秋桂子", "菱歌泛夜", "嘻嘻钓叟莲娃", "乘醉听箫鼓", "吟赏烟霞", "异日图将好景", "天容水色西湖好", "云物俱鲜", "鸥鹭闲眠", "急管繁弦", "玉盏催传", "稳泛平波任醉眠", "狼籍残红", "飞絮濛濛", "垂柳阑干尽日风", "春水绿于染", "烟雨微微", "一片笙歌醉里归", "载酒来时", "四面垂杨十里荷", "问云何处最花多", "香满西湖烟水", "碧毯线头抽早稻", "青罗裙带展新蒲", "望海楼明照曙霞", "护江堤白踏晴沙", "草长平湖白鹭飞", "风日晴和人意好", "夕阳箫鼓几船归", "孤山落月趁疏钟", "画舫参差柳岸风", "柳暗花明春正好", "重湖雾散分林沙", "何处黄鹤破瞑烟", "一声啼过苏堤晓", "风过犹疑酝酿香", "薰得凌波仙子醉", "锦裳零落怯新凉", "月冷寒泉凝不流", "棹歌何处泛归舟", "白蘋红蓼西风裹", "一色湖光万顷秋", "花著鱼身鱼嘬花", "最是春光萃西子", "底须秋水悟南华", "天影清涵水墨图", "夜静老龙鳞甲冷", "冰壶深处浴明珠", "烟光山色淡溟濛", "千尺浮屠兀倚空", "湖上画船归欲尽", "孤峰犹带夕阳红", "柳阴深霭玉壶清", "碧浪摇空舞袖轻", "林外莺声啼不尽", "画船何处又吹笙", "杭州一望空", "飞凤亭边树", "桃花岭上风"];
         let titles = ["饮湖上初晴后雨", "望湖楼醉书", "六月二十七日望湖楼醉书", "晓出净慈寺送林子方", "钱塘湖春行", "春题湖上", "山园小梅", "采桑子", "题临安邸", "灵隐寺", "望海潮", "春日西湖寄谢法曹歌", "浣溪沙·荷花", "昭君怨·咏荷上雨", "杭州春望", "湖上", "苏堤春晓", "曲院风荷", "平湖秋月", "花港观鱼", "三潭印月", "雷峰夕照", "柳浪闻莺", "看山"];
 
+        // 杭州地理人文科技问答题目
+        let quizQuestions = [
+            // 地理类
+            { question: "杭州位于哪个省份？", options: ["浙江省", "江苏省", "安徽省", "福建省"], correctAnswer: "浙江省", category: "地理" },
+            { question: "杭州是浙江省的什么城市？", options: ["省会城市", "副省级城市", "县级市", "地级市"], correctAnswer: "省会城市", category: "地理" },
+            { question: "杭州位于哪个三角洲地区？", options: ["长江三角洲", "珠江三角洲", "京津冀地区", "成渝地区"], correctAnswer: "长江三角洲", category: "地理" },
+            { question: "杭州地处杭州湾的哪个位置？", options: ["西端", "东端", "南端", "北端"], correctAnswer: "西端", category: "地理" },
+            { question: "杭州市域位于哪个纬度范围？", options: ["北纬29°11'-30°34'", "北纬28°-32°", "北纬30°-35°", "北纬25°-30°"], correctAnswer: "北纬29°11'-30°34'", category: "地理" },
+            { question: "杭州市域位于哪个经度范围？", options: ["东经118°20'-120°37'", "东经115°-120°", "东经120°-125°", "东经110°-115°"], correctAnswer: "东经118°20'-120°37'", category: "地理" },
+            { question: "杭州全市土地面积约为多少平方千米？", options: ["16850平方千米", "10000平方千米", "20000平方千米", "8000平方千米"], correctAnswer: "16850平方千米", category: "地理" },
+            { question: "杭州市区面积约为多少平方千米？", options: ["8289平方千米", "5000平方千米", "10000平方千米", "3000平方千米"], correctAnswer: "8289平方千米", category: "地理" },
+            { question: "杭州丘陵山地占总面积的百分比是多少？", options: ["65.6%", "50%", "40%", "30%"], correctAnswer: "65.6%", category: "地理" },
+            { question: "杭州平原占总面积的百分比是多少？", options: ["26.4%", "35%", "45%", "55%"], correctAnswer: "26.4%", category: "地理" },
+            { question: "杭州有哪五大水系？", options: ["江、河、湖、海、溪", "江、河、湖、海、泉", "江、河、湖、溪、潭", "江、河、湖、海、渠"], correctAnswer: "江、河、湖、海、溪", category: "地理" },
+            { question: "钱塘江流经杭州的哪个方向？", options: ["从西向东", "从北向南", "从东向西", "从南向北"], correctAnswer: "从西向东", category: "地理" },
+            { question: "西湖位于杭州的哪个位置？", options: ["市中心", "城西", "城东", "城南"], correctAnswer: "市中心", category: "地理" },
+            { question: "杭州的最高峰是哪座山？", options: ["天目山", "北高峰", "南高峰", "玉皇山"], correctAnswer: "天目山", category: "地理" },
+            { question: "天目山位于杭州哪个区？", options: ["临安区", "余杭区", "富阳区", "萧山区"], correctAnswer: "临安区", category: "地理" },
+            { question: "杭州森林覆盖率约为多少？", options: ["65.74%", "50%", "40%", "30%"], correctAnswer: "65.74%", category: "地理" },
+            { question: "西溪湿地位于杭州哪个区？", options: ["西湖区", "拱墅区", "上城区", "滨江区"], correctAnswer: "西湖区", category: "地理" },
+            { question: "西溪湿地的面积约为多少平方千米？", options: ["11.5平方千米", "5平方千米", "20平方千米", "30平方千米"], correctAnswer: "11.5平方千米", category: "地理" },
+            { question: "钱塘江潮涌是全球第几大潮涌奇观？", options: ["第一大", "第二大", "第三大", "第四大"], correctAnswer: "第一大", category: "地理" },
+            { question: "钱塘江大潮最佳观潮地点在哪里？", options: ["海宁盐官", "杭州西湖", "萧山", "余杭"], correctAnswer: "海宁盐官", category: "地理" },
+            { question: "杭州湾位于哪个海域？", options: ["东海", "南海", "黄海", "渤海"], correctAnswer: "东海", category: "地理" },
+            { question: "杭州的气候类型是什么？", options: ["亚热带季风气候", "温带季风气候", "热带季风气候", "地中海气候"], correctAnswer: "亚热带季风气候", category: "地理" },
+            { question: "杭州年平均气温约为多少度？", options: ["16-18℃", "10-12℃", "20-22℃", "25-27℃"], correctAnswer: "16-18℃", category: "地理" },
+            { question: "杭州年平均降水量约为多少毫米？", options: ["1400-1600毫米", "800-1000毫米", "2000-2200毫米", "500-700毫米"], correctAnswer: "1400-1600毫米", category: "地理" },
+            { question: "千岛湖位于杭州哪个县？", options: ["淳安县", "桐庐县", "建德市", "临安区"], correctAnswer: "淳安县", category: "地理" },
+            
+            // 行政区划类
+            { question: "杭州市辖多少个区？", options: ["10个", "8个", "12个", "6个"], correctAnswer: "10个", category: "行政区划" },
+            { question: "杭州市辖多少个县？", options: ["2个", "1个", "3个", "4个"], correctAnswer: "2个", category: "行政区划" },
+            { question: "杭州市代管多少个县级市？", options: ["1个", "2个", "3个", "0个"], correctAnswer: "1个", category: "行政区划" },
+            { question: "杭州市下辖的县级市是哪个？", options: ["建德市", "富阳市", "临安市", "萧山市"], correctAnswer: "建德市", category: "行政区划" },
+            { question: "杭州市下辖的两个县是哪两个？", options: ["桐庐县和淳安县", "桐庐县和建德县", "淳安县和临安县", "富阳县和桐庐县"], correctAnswer: "桐庐县和淳安县", category: "行政区划" },
+            { question: "杭州市有多少个乡镇（街道）？", options: ["191个", "150个", "200个", "100个"], correctAnswer: "191个", category: "行政区划" },
+            { question: "杭州市有多少个街道？", options: ["93个", "75个", "23个", "100个"], correctAnswer: "93个", category: "行政区划" },
+            { question: "杭州市有多少个镇？", options: ["75个", "93个", "23个", "50个"], correctAnswer: "75个", category: "行政区划" },
+            { question: "杭州市有多少个乡？", options: ["23个", "75个", "93个", "10个"], correctAnswer: "23个", category: "行政区划" },
+            { question: "杭州市有多少个社区、居委会？", options: ["1423个", "1000个", "1902个", "500个"], correctAnswer: "1423个", category: "行政区划" },
+            { question: "杭州市有多少个行政村？", options: ["1902个", "1423个", "1000个", "500个"], correctAnswer: "1902个", category: "行政区划" },
+            { question: "萧山区原为哪个市？", options: ["萧山市", "萧山县", "萧山镇", "萧山乡"], correctAnswer: "萧山市", category: "行政区划" },
+            { question: "余杭区原为哪个市？", options: ["余杭市", "余杭县", "余杭镇", "余杭乡"], correctAnswer: "余杭市", category: "行政区划" },
+            { question: "富阳区何时撤市设区？", options: ["2014年", "2015年", "2017年", "2020年"], correctAnswer: "2014年", category: "行政区划" },
+            { question: "临安区何时撤市设区？", options: ["2017年", "2014年", "2015年", "2020年"], correctAnswer: "2017年", category: "行政区划" },
+            { question: "钱塘区何时设立？", options: ["2021年", "2020年", "2019年", "2018年"], correctAnswer: "2021年", category: "行政区划" },
+            { question: "临平区何时设立？", options: ["2021年", "2020年", "2019年", "2018年"], correctAnswer: "2021年", category: "行政区划" },
+            { question: "滨江区位于杭州哪个位置？", options: ["钱塘江南岸", "钱塘江北岸", "西湖西岸", "西湖东岸"], correctAnswer: "钱塘江南岸", category: "行政区划" },
+            { question: "高新区（滨江）是什么级别的开发区？", options: ["国家级高新区", "省级高新区", "市级高新区", "区级高新区"], correctAnswer: "国家级高新区", category: "行政区划" },
+            { question: "杭州未来科技城位于哪个区？", options: ["余杭区", "西湖区", "滨江区", "萧山区"], correctAnswer: "余杭区", category: "行政区划" },
+            
+            // 历史类
+            { question: "杭州是华夏文明的发祥地之一吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "历史" },
+            { question: "杭州是中国著名的七大古都之一吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "历史" },
+            { question: "杭州以什么著称于世？", options: ["东南名郡", "中原名郡", "北方名郡", "西南名郡"], correctAnswer: "东南名郡", category: "历史" },
+            { question: "杭州之名首次出现在历史上的时间是？", options: ["隋开皇九年(589年)", "秦朝", "唐朝", "宋朝"], correctAnswer: "隋开皇九年(589年)", category: "历史" },
+            { question: "杭州自秦时设县治以来有多少年历史？", options: ["2200多年", "1000多年", "3000多年", "500年"], correctAnswer: "2200多年", category: "历史" },
+            { question: "跨湖桥遗址显示杭州有多少年人类活动历史？", options: ["8000多年", "5000多年", "3000多年", "1000多年"], correctAnswer: "8000多年", category: "历史" },
+            { question: "良渚文化距今多少年？", options: ["5000多年", "3000多年", "8000多年", "1000多年"], correctAnswer: "5000多年", category: "历史" },
+            { question: "良渚文化被称为什么？", options: ["中华文明的曙光", "华夏文明的起源", "东方文明的曙光", "南方文明的曙光"], correctAnswer: "中华文明的曙光", category: "历史" },
+            { question: "五代吴越国建都杭州的时间是？", options: ["907-978年", "1138-1279年", "589-600年", "800-900年"], correctAnswer: "907-978年", category: "历史" },
+            { question: "南宋王朝建都杭州的时间是？", options: ["1138-1279年", "907-978年", "589-600年", "800-900年"], correctAnswer: "1138-1279年", category: "历史" },
+            { question: "马可·波罗如何评价杭州？", options: ["世界上最美丽华贵之天城", "东方明珠", "人间天堂", "江南明珠"], correctAnswer: "世界上最美丽华贵之天城", category: "历史" },
+            { question: "马可·波罗几次到访杭州？", options: ["三次", "一次", "两次", "四次"], correctAnswer: "三次", category: "历史" },
+            { question: "白居易何时任杭州刺史？", options: ["公元822年", "公元800年", "公元850年", "公元900年"], correctAnswer: "公元822年", category: "历史" },
+            { question: "白居易在杭州主持了什么工程？", options: ["疏浚西湖筑白堤", "修建苏堤", "修建钱塘江堤", "修建灵隐寺"], correctAnswer: "疏浚西湖筑白堤", category: "历史" },
+            { question: "苏轼几次来杭任职？", options: ["两次", "一次", "三次", "四次"], correctAnswer: "两次", category: "历史" },
+            { question: "苏轼在杭州主持了什么工程？", options: ["疏浚西湖筑苏堤", "修建白堤", "修建钱塘江堤", "修建灵隐寺"], correctAnswer: "疏浚西湖筑苏堤", category: "历史" },
+            { question: "林逋隐居在哪里？", options: ["孤山", "西湖", "钱塘江", "天目山"], correctAnswer: "孤山", category: "历史" },
+            { question: "林逋以什么著称？", options: ["梅妻鹤子", "茶圣", "诗圣", "画圣"], correctAnswer: "梅妻鹤子", category: "历史" },
+            { question: "杭州是首批国家历史文化名城吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "历史" },
+            { question: "杭州曾是哪个朝代的都城？", options: ["吴越国和南宋", "唐朝", "明朝", "清朝"], correctAnswer: "吴越国和南宋", category: "历史" },
+            
+            // 世界遗产类
+            { question: "杭州拥有多少处世界文化遗产？", options: ["3处", "1处", "2处", "4处"], correctAnswer: "3处", category: "世界遗产" },
+            { question: "杭州第一处世界文化遗产是什么？", options: ["西湖文化景观", "良渚古城遗址", "大运河", "西溪湿地"], correctAnswer: "西湖文化景观", category: "世界遗产" },
+            { question: "西湖何时列入世界遗产名录？", options: ["2011年", "2010年", "2012年", "2013年"], correctAnswer: "2011年", category: "世界遗产" },
+            { question: "良渚古城遗址何时列入世界遗产名录？", options: ["2019年", "2011年", "2015年", "2020年"], correctAnswer: "2019年", category: "世界遗产" },
+            { question: "良渚古城遗址实证了什么？", options: ["中华5000年文明", "中华3000年文明", "中华1000年文明", "中华8000年文明"], correctAnswer: "中华5000年文明", category: "世界遗产" },
+            { question: "良渚古城遗址位于杭州哪个区？", options: ["余杭区", "西湖区", "临安区", "富阳区"], correctAnswer: "余杭区", category: "世界遗产" },
+            { question: "中国大运河（杭州段）何时列入世界遗产名录？", options: ["2014年", "2011年", "2019年", "2015年"], correctAnswer: "2014年", category: "世界遗产" },
+            { question: "京杭大运河是世界上里程最长的运河吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "世界遗产" },
+            { question: "京杭大运河全长约多少公里？", options: ["约1800公里", "约1000公里", "约2000公里", "约500公里"], correctAnswer: "约1800公里", category: "世界遗产" },
+            { question: "西湖被称为什么？", options: ["东方文化名湖", "东方明珠", "江南明珠", "人间仙境"], correctAnswer: "东方文化名湖", category: "世界遗产" },
+            { question: "西湖十景包括哪些？", options: ["苏堤春晓、曲院风荷等", "西湖春晓等", "钱塘春晓等", "江南春晓等"], correctAnswer: "苏堤春晓、曲院风荷等", category: "世界遗产" },
+            { question: "西湖十景共有多少景？", options: ["10景", "8景", "12景", "6景"], correctAnswer: "10景", category: "世界遗产" },
+            { question: "苏堤春晓是西湖十景之一吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "世界遗产" },
+            { question: "断桥残雪是西湖十景之一吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "世界遗产" },
+            { question: "雷峰夕照是西湖十景之一吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "世界遗产" },
+            { question: "三潭印月是西湖十景之一吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "世界遗产" },
+            { question: "平湖秋月是西湖十景之一吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "世界遗产" },
+            { question: "曲院风荷是西湖十景之一吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "世界遗产" },
+            { question: "花港观鱼是西湖十景之一吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "世界遗产" },
+            { question: "柳浪闻莺是西湖十景之一吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "世界遗产" },
+            
+            // 人口类
+            { question: "杭州2025年末常住人口约为多少？", options: ["1270万人", "1000万人", "1500万人", "800万人"], correctAnswer: "1270万人", category: "人口" },
+            { question: "杭州城镇化率约为多少？", options: ["85.3%", "70%", "60%", "50%"], correctAnswer: "85.3%", category: "人口" },
+            { question: "杭州户籍人口约为多少？", options: ["885.9万人", "1270万人", "1000万人", "500万人"], correctAnswer: "885.9万人", category: "人口" },
+            { question: "杭州是全国第几个超大城市？", options: ["第十个", "第五个", "第一个", "第十五个"], correctAnswer: "第十个", category: "人口" },
+            { question: "杭州城镇人口约为多少？", options: ["1083.9万人", "1270万人", "500万人", "800万人"], correctAnswer: "1083.9万人", category: "人口" },
+            { question: "杭州人口出生率约为多少？", options: ["6.9‰", "10‰", "5‰", "15‰"], correctAnswer: "6.9‰", category: "人口" },
+            { question: "杭州人口死亡率约为多少？", options: ["5.5‰", "6.9‰", "3‰", "10‰"], correctAnswer: "5.5‰", category: "人口" },
+            { question: "杭州人口自然增长率约为多少？", options: ["1.8‰", "5‰", "10‰", "0‰"], correctAnswer: "1.8‰", category: "人口" },
+            { question: "杭州男性占总人口的比例约为多少？", options: ["51.9%", "50%", "48.1%", "55%"], correctAnswer: "51.9%", category: "人口" },
+            { question: "杭州女性占总人口的比例约为多少？", options: ["48.1%", "51.9%", "50%", "45%"], correctAnswer: "48.1%", category: "人口" },
+            { question: "杭州0-14岁人口占总人口的比例约为多少？", options: ["12.3%", "20%", "30%", "10%"], correctAnswer: "12.3%", category: "人口" },
+            { question: "杭州15-59岁人口占总人口的比例约为多少？", options: ["66.4%", "50%", "70%", "40%"], correctAnswer: "66.4%", category: "人口" },
+            
+            // 经济类
+            { question: "杭州经济总量突破多少万亿元？", options: ["2万亿元", "1万亿元", "3万亿元", "5000亿元"], correctAnswer: "2万亿元", category: "经济" },
+            { question: "杭州是长三角地区GDP超2万亿的超大城市吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "经济" },
+            { question: "杭州2022年旅游总收入约为多少？", options: ["1298亿元", "500亿元", "2000亿元", "100亿元"], correctAnswer: "1298亿元", category: "经济" },
+            { question: "杭州2022年文化产业增加值约为多少？", options: ["2420亿元", "1000亿元", "500亿元", "3000亿元"], correctAnswer: "2420亿元", category: "经济" },
+            { question: "杭州文化产业占GDP比重约为多少？", options: ["12.9%", "10%", "20%", "5%"], correctAnswer: "12.9%", category: "经济" },
+            { question: "杭州2024数字经济核心产业增加值占GDP比重约为多少？", options: ["28.8%", "20%", "15%", "35%"], correctAnswer: "28.8%", category: "经济" },
+            { question: "杭州文化产业及相关产业占GDP比重约为多少？", options: ["15.8%", "10%", "20%", "5%"], correctAnswer: "15.8%", category: "经济" },
+            { question: "杭州物联网街全长多少米？", options: ["1791米", "1000米", "2000米", "500米"], correctAnswer: "1791米", category: "经济" },
+            { question: "杭州物联网街拥有多少家上市企业？", options: ["16家", "10家", "20家", "5家"], correctAnswer: "16家", category: "经济" },
+            { question: "杭州物联网街上市企业总市值超过多少？", options: ["6500亿元", "1000亿元", "5000亿元", "3000亿元"], correctAnswer: "6500亿元", category: "经济" },
+            { question: "杭州连续多少年蝉联中国最具幸福感城市？", options: ["16年", "10年", "5年", "20年"], correctAnswer: "16年", category: "经济" },
+            { question: "杭州GAWC世界城市名册排名全球第几位？", options: ["第65位", "第100位", "第50位", "第80位"], correctAnswer: "第65位", category: "经济" },
+            { question: "杭州建成区面积从2012年的433平方千米扩大到2024年的多少？", options: ["801平方千米", "600平方千米", "500平方千米", "1000平方千米"], correctAnswer: "801平方千米", category: "经济" },
+            { question: "杭州城镇化率从2012年的74.3%提升到2024年的多少？", options: ["84.8%", "80%", "90%", "75%"], correctAnswer: "84.8%", category: "经济" },
+            
+            // 科技类
+            { question: "杭州国家创新型城市创新能力评价位列全国第几位？", options: ["第4位", "第1位", "第10位", "第20位"], correctAnswer: "第4位", category: "科技" },
+            { question: "阿里巴巴总部位于杭州哪里？", options: ["未来科技城", "滨江区", "西湖区", "萧山区"], correctAnswer: "未来科技城", category: "科技" },
+            { question: "阿里巴巴全球总部总建筑面积约为多少？", options: ["近百万平方米", "50万平方米", "20万平方米", "10万平方米"], correctAnswer: "近百万平方米", category: "科技" },
+            { question: "DEEPSEEK诞生地在哪里？", options: ["杭州", "北京", "上海", "深圳"], correctAnswer: "杭州", category: "科技" },
+            { question: "杭州被称为什么之城？", options: ["数字经济之城", "工业之城", "农业之城", "旅游之城"], correctAnswer: "数字经济之城", category: "科技" },
+            { question: "杭州被称为什么之都？", options: ["动漫之都", "电影之都", "音乐之都", "艺术之都"], correctAnswer: "动漫之都", category: "科技" },
+            { question: "杭州每年举办什么博览会？", options: ["中国国际动漫博览会", "国际电影节", "国际书展", "国际车展"], correctAnswer: "中国国际动漫博览会", category: "科技" },
+            { question: "杭州科技六小龙在哪里横空出世？", options: ["杭州", "北京", "上海", "深圳"], correctAnswer: "杭州", category: "科技" },
+            { question: "杭州未来科技城是什么级别的科技城？", options: ["国家级", "省级", "市级", "区级"], correctAnswer: "国家级", category: "科技" },
+            { question: "高新区（滨江）是国家什么基地？", options: ["国家物联网产业基地", "国家农业基地", "国家工业基地", "国家旅游基地"], correctAnswer: "国家物联网产业基地", category: "科技" },
+            { question: "高新区（滨江）是国家几A级旅游景区？", options: ["3A级", "5A级", "4A级", "2A级"], correctAnswer: "3A级", category: "科技" },
+            { question: "杭州被称为创新活力之城吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "科技" },
+            { question: "杭州是时尚创意之城吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "科技" },
+            
+            // 文化类
+            { question: "杭州文化以什么为代表？", options: ["西湖文化、运河文化、钱塘江文化", "西湖文化", "运河文化", "钱塘江文化"], correctAnswer: "西湖文化、运河文化、钱塘江文化", category: "文化" },
+            { question: "西湖文化的特色是什么？", options: ["精致、和谐、典雅", "开放、兼容", "大气开放", "粗犷豪迈"], correctAnswer: "精致、和谐、典雅", category: "文化" },
+            { question: "运河文化的特色是什么？", options: ["开放、兼容、庶俗", "精致、和谐", "典雅", "大气"], correctAnswer: "开放、兼容、庶俗", category: "文化" },
+            { question: "钱塘江文化体现了什么特色？", options: ["大气开放", "精致典雅", "兼容庶俗", "和谐典雅"], correctAnswer: "大气开放", category: "文化" },
+            { question: "杭州有多少项人类非遗？", options: ["多项", "一项", "两项", "三项"], correctAnswer: "多项", category: "文化" },
+            { question: "浙派古琴是杭州的人类非遗吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "文化" },
+            { question: "金石篆刻是杭州的人类非遗吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "文化" },
+            { question: "杭罗织造是杭州的人类非遗吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "文化" },
+            { question: "西湖龙井绿茶制作技艺是杭州的人类非遗吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "文化" },
+            { question: "径山茶宴是杭州的人类非遗吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "文化" },
+            { question: "半山立夏习俗是杭州的人类非遗吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "文化" },
+            { question: "西泠印社位于杭州哪里？", options: ["孤山", "西湖", "钱塘江", "天目山"], correctAnswer: "孤山", category: "文化" },
+            { question: "西泠印社是什么级别的文化遗产？", options: ["人类非遗", "国家级", "省级", "市级"], correctAnswer: "人类非遗", category: "文化" },
+            { question: "杭州被称为文化之邦吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "文化" },
+            { question: "杭州被称为鱼米之乡吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "文化" },
+            { question: "杭州被称为丝绸之府吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "文化" },
+            { question: "良渚出土的丝织物距今多少年？", options: ["4700年", "3000年", "2000年", "1000年"], correctAnswer: "4700年", category: "文化" },
+            { question: "杭州丝绸有多少个大类？", options: ["14个大类", "10个大类", "20个大类", "5个大类"], correctAnswer: "14个大类", category: "文化" },
+            { question: "杭州丝绸有多少个品种？", options: ["200多个品种", "100个品种", "50个品种", "300个品种"], correctAnswer: "200多个品种", category: "文化" },
+            { question: "杭州丝绸远销多少个国家和地区？", options: ["100多个", "50个", "200个", "30个"], correctAnswer: "100多个", category: "文化" },
+            
+            // 特产美食类
+            { question: "西湖龙井茶是什么级别的特产？", options: ["中国名茶", "普通茶", "省级名茶", "市级名茶"], correctAnswer: "中国名茶", category: "特产美食" },
+            { question: "东坡肉因谁而命名？", options: ["苏东坡", "白居易", "杨万里", "林逋"], correctAnswer: "苏东坡", category: "特产美食" },
+            { question: "东坡肉有什么特点？", options: ["色泽红润、肥而不腻", "清淡", "辛辣", "酸甜"], correctAnswer: "色泽红润、肥而不腻", category: "特产美食" },
+            { question: "王星记扇子是杭州特产吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "特产美食" },
+            { question: "张小泉剪刀是杭州特产吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "特产美食" },
+            { question: "致中和五加皮是杭州特产吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "特产美食" },
+            { question: "临安山核桃是杭州特产吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "特产美食" },
+            { question: "杭州的市花是什么？", options: ["桂花", "荷花", "梅花", "兰花"], correctAnswer: "桂花", category: "特产美食" },
+            { question: "杭州的市树是什么？", options: ["香樟", "柳树", "松树", "柏树"], correctAnswer: "香樟", category: "特产美食" },
+            { question: "满陇桂雨以什么闻名？", options: ["桂花", "荷花", "梅花", "兰花"], correctAnswer: "桂花", category: "特产美食" },
+            
+            // 国际活动类
+            { question: "杭州何时承办G20峰会？", options: ["2016年", "2015年", "2017年", "2018年"], correctAnswer: "2016年", category: "国际活动" },
+            { question: "G20杭州峰会是第几次峰会？", options: ["第十一次", "第十次", "第十二次", "第九次"], correctAnswer: "第十一次", category: "国际活动" },
+            { question: "杭州何时获得亚运会举办权？", options: ["2015年", "2016年", "2014年", "2017年"], correctAnswer: "2015年", category: "国际活动" },
+            { question: "杭州亚运会是第几届？", options: ["第19届", "第18届", "第20届", "第17届"], correctAnswer: "第19届", category: "国际活动" },
+            { question: "杭州亚运会何时举办？", options: ["2023年", "2022年", "2024年", "2021年"], correctAnswer: "2023年", category: "国际活动" },
+            { question: "杭州亚残运会是第几届？", options: ["第4届", "第3届", "第5届", "第2届"], correctAnswer: "第4届", category: "国际活动" },
+            { question: "杭州亚运会和亚残运会何时举办？", options: ["2023年", "2022年", "2024年", "2021年"], correctAnswer: "2023年", category: "国际活动" },
+            { question: "杭州被联合国世界旅游组织评定为什么？", options: ["中国最佳旅游城市", "中国优秀旅游城市", "中国旅游城市", "世界旅游城市"], correctAnswer: "中国最佳旅游城市", category: "国际活动" },
+            { question: "杭州入选全球多少个旅游最佳实践样本城市？", options: ["15个", "10个", "20个", "5个"], correctAnswer: "15个", category: "国际活动" },
+            { question: "杭州入选全球百强会议目的地城市吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "国际活动" },
+            { question: "杭州入选全球最佳旅游目的地吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "国际活动" },
+            
+            // 交通类
+            { question: "杭州快速路网里程约为多少公里？", options: ["516公里", "300公里", "200公里", "100公里"], correctAnswer: "516公里", category: "交通" },
+            { question: "杭州都市区基本实现多少小时通勤？", options: ["1小时", "2小时", "3小时", "0.5小时"], correctAnswer: "1小时", category: "交通" },
+            { question: "杭州是国际性综合交通枢纽城市吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "交通" },
+            { question: "杭州城市供水保障能力在全国前列吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "交通" },
+            { question: "杭州城市供电保障能力在全国前列吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "交通" },
+            { question: "杭州城市供气保障能力在全国前列吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "交通" },
+            { question: "杭州地下空间综合实力在全国前列吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "交通" },
+            { question: "杭州地铁首条线路何时开通？", options: ["2012年", "2010年", "2015年", "2020年"], correctAnswer: "2012年", category: "交通" },
+            { question: "杭州萧山国际机场是什么级别的机场？", options: ["国际机场", "国内机场", "区域机场", "小型机场"], correctAnswer: "国际机场", category: "交通" },
+            { question: "杭州东站是什么级别的火车站？", options: ["特大型火车站", "大型火车站", "中型火车站", "小型火车站"], correctAnswer: "特大型火车站", category: "交通" },
+            
+            // 城市定位类
+            { question: "杭州的城市性质定位是什么？", options: ["浙江省省会、东部地区重要的中心城市、国家历史文化名城、国际性综合交通枢纽城市", "浙江省省会", "东部地区中心城市", "国家历史文化名城"], correctAnswer: "浙江省省会、东部地区重要的中心城市、国家历史文化名城、国际性综合交通枢纽城市", category: "城市定位" },
+            { question: "杭州被赋予什么特殊定位？", options: ["东部地区重要的中心城市、国家历史文化名城、国际性综合交通枢纽城市", "西部地区中心城市", "中部地区中心城市", "北方地区中心城市"], correctAnswer: "东部地区重要的中心城市、国家历史文化名城、国际性综合交通枢纽城市", category: "城市定位" },
+            { question: "杭州的城市发展定位是什么？", options: ["世界一流", "国内一流", "亚洲一流", "区域一流"], correctAnswer: "世界一流", category: "城市定位" },
+            { question: "杭州从什么时代迈向什么时代？", options: ["从西湖时代迈向钱塘江时代", "从钱塘江时代迈向西湖时代", "从运河时代迈向钱塘江时代", "从钱塘江时代迈向运河时代"], correctAnswer: "从西湖时代迈向钱塘江时代", category: "城市定位" },
+            { question: "杭州国土空间总体规划构建什么格局？", options: ["一主六辅三城、三江两脉八带", "一主三辅", "两主六辅", "一主一辅"], correctAnswer: "一主六辅三城、三江两脉八带", category: "城市定位" },
+            { question: "杭州是丝绸之路经济带和21世纪海上丝绸之路的什么？", options: ["延伸交点和网上丝绸之路战略枢纽城市", "起点城市", "终点城市", "中转城市"], correctAnswer: "延伸交点和网上丝绸之路战略枢纽城市", category: "城市定位" },
+            { question: "杭州被称为人间天堂吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "城市定位" },
+            { question: "杭州是风景旅游城市吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "城市定位" },
+            { question: "杭州是长江三角洲中心城市吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "城市定位" },
+            { question: "杭州是浙江省经济、文化、科教中心吗？", options: ["是", "否", "不确定", "部分是"], correctAnswer: "是", category: "城市定位" }
+        ];
+
+        // 生成更多问答题目
+        function generateMoreQuizQuestions() {
+            const categories = {
+                "地理": [
+                    { q: "杭州位于中国哪个方位？", opts: ["东南沿海", "西北内陆", "东北沿海", "西南内陆"], ans: "东南沿海" },
+                    { q: "杭州湾连接哪个海域？", opts: ["东海", "南海", "黄海", "渤海"], ans: "东海" },
+                    { q: "钱塘江全长约多少公里？", opts: ["约500公里", "约300公里", "约700公里", "约200公里"], ans: "约500公里" },
+                    { q: "西湖面积约为多少平方千米？", opts: ["约6.39平方千米", "约10平方千米", "约5平方千米", "约8平方千米"], ans: "约6.39平方千米" },
+                    { q: "西湖平均深度约为多少米？", opts: ["约1.5米", "约3米", "约5米", "约10米"], ans: "约1.5米" },
+                    { q: "北高峰海拔约为多少米？", opts: ["约314米", "约200米", "约400米", "约500米"], ans: "约314米" },
+                    { q: "南高峰海拔约为多少米？", opts: ["约257米", "约300米", "约200米", "约400米"], ans: "约257米" },
+                    { q: "杭州有多少座山峰？", opts: ["众多山峰", "10座", "20座", "50座"], ans: "众多山峰" },
+                    { q: "杭州有多少条河流？", opts: ["众多河流", "10条", "20条", "5条"], ans: "众多河流" },
+                    { q: "杭州属于什么地形？", opts: ["丘陵山地和平原", "高原", "盆地", "沙漠"], ans: "丘陵山地和平原" },
+                    { q: "杭州西部主要是什么地形？", opts: ["丘陵山地", "平原", "高原", "盆地"], ans: "丘陵山地" },
+                    { q: "杭州东北部主要是什么地形？", opts: ["平原", "丘陵山地", "高原", "盆地"], ans: "平原" },
+                    { q: "杭州有什么国家级自然保护区？", opts: ["天目山国家级自然保护区", "西溪自然保护区", "西湖自然保护区", "钱塘江自然保护区"], ans: "天目山国家级自然保护区" },
+                    { q: "千岛湖有多少座岛屿？", opts: ["1078座", "500座", "200座", "100座"], ans: "1078座" },
+                    { q: "千岛湖是什么类型的水库？", opts: ["人工湖", "天然湖", "堰塞湖", "火山湖"], ans: "人工湖" },
+                    { q: "千岛湖面积约多少平方千米？", opts: ["约573平方千米", "约300平方千米", "约100平方千米", "约200平方千米"], ans: "约573平方千米" },
+                    { q: "富春江流经杭州哪个区域？", opts: ["富阳区和桐庐县", "西湖区", "滨江区", "萧山区"], ans: "富阳区和桐庐县" },
+                    { q: "新安江是钱塘江的什么？", opts: ["上游", "下游", "支流", "源头"], ans: "上游" },
+                    { q: "杭州的土壤类型主要是什么？", opts: ["红壤和黄壤", "黑土", "黄土", "沙土"], ans: "红壤和黄壤" },
+                    { q: "杭州的植被类型主要是什么？", opts: ["亚热带常绿阔叶林", "温带落叶林", "热带雨林", "针叶林"], ans: "亚热带常绿阔叶林" }
+                ],
+                "历史": [
+                    { q: "秦朝时杭州称什么？", opts: ["钱唐县", "杭州", "临安", "余杭"], ans: "钱唐县" },
+                    { q: "南宋时杭州称什么？", opts: ["临安", "杭州", "钱唐", "余杭"], ans: "临安" },
+                    { q: "吴越国国王是谁？", opts: ["钱镠", "苏轼", "白居易", "杨万里"], ans: "钱镠" },
+                    { q: "南宋第一位皇帝是谁？", opts: ["赵构", "赵匡胤", "赵光义", "赵恒"], ans: "赵构" },
+                    { q: "杭州何时成为南宋都城？", opts: ["1138年", "1127年", "1140年", "1150年"], ans: "1138年" },
+                    { q: "杭州古城墙建于哪个朝代？", opts: ["多个朝代", "唐朝", "宋朝", "明朝"], ans: "多个朝代" },
+                    { q: "杭州古城墙现存多少？", opts: ["部分遗址", "完整保存", "全部拆除", "大部分保存"], ans: "部分遗址" },
+                    { q: "杭州鼓楼建于哪个朝代？", opts: ["明朝", "唐朝", "宋朝", "清朝"], ans: "明朝" },
+                    { q: "杭州德寿宫是谁的宫殿？", opts: ["宋高宗赵构", "钱镠", "苏轼", "白居易"], ans: "宋高宗赵构" },
+                    { q: "杭州凤凰山南宋皇城遗址在哪里？", opts: ["凤凰山", "西湖", "钱塘江", "天目山"], ans: "凤凰山" },
+                    { q: "杭州八卦田是谁创建的？", opts: ["宋高宗赵构", "钱镠", "苏轼", "白居易"], ans: "宋高宗赵构" },
+                    { q: "杭州八卦田是什么用途？", opts: ["祭祀农耕", "军事", "居住", "娱乐"], ans: "祭祀农耕" },
+                    { q: "杭州岳飞墓在哪里？", opts: ["西湖边", "钱塘江边", "天目山", "西溪湿地"], ans: "西湖边" },
+                    { q: "岳飞是什么朝代的将领？", opts: ["南宋", "北宋", "唐朝", "明朝"], ans: "南宋" },
+                    { q: "杭州岳王庙建于哪个朝代？", opts: ["南宋", "北宋", "唐朝", "明朝"], ans: "南宋" },
+                    { q: "于谦墓在哪里？", opts: ["西湖边", "钱塘江边", "天目山", "西溪湿地"], ans: "西湖边" },
+                    { q: "于谦是什么朝代的官员？", opts: ["明朝", "宋朝", "唐朝", "清朝"], ans: "明朝" },
+                    { q: "张苍水墓在哪里？", opts: ["西湖边", "钱塘江边", "天目山", "西溪湿地"], ans: "西湖边" },
+                    { q: "张苍水是什么朝代的将领？", opts: ["明朝", "宋朝", "唐朝", "清朝"], ans: "明朝" },
+                    { q: "西湖三杰是哪三位？", opts: ["岳飞、于谦、张苍水", "苏轼、白居易、杨万里", "钱镠、赵构、岳飞", "林逋、苏轼、白居易"], ans: "岳飞、于谦、张苍水" }
+                ],
+                "科技": [
+                    { q: "杭州有多少家上市公司？", opts: ["众多上市公司", "50家", "100家", "20家"], ans: "众多上市公司" },
+                    { q: "杭州高新区成立于哪一年？", opts: ["1990年", "2000年", "2010年", "2020年"], ans: "1990年" },
+                    { q: "杭州高新区何时升级为国家级？", opts: ["1991年", "1990年", "2000年", "2010年"], ans: "1991年" },
+                    { q: "杭州未来科技城成立于哪一年？", opts: ["2011年", "2010年", "2015年", "2020年"], ans: "2011年" },
+                    { q: "杭州有多少家独角兽企业？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                    { q: "杭州有多少家高新技术企业？", opts: ["众多", "100家", "500家", "1000家"], ans: "众多" },
+                    { q: "杭州数字经济产业规模在全国排名如何？", opts: ["前列", "中等", "落后", "末尾"], ans: "前列" },
+                    { q: "杭州人工智能产业发展如何？", opts: ["快速发展", "缓慢发展", "停滞", "起步"], ans: "快速发展" },
+                    { q: "杭州云计算产业发展如何？", opts: ["快速发展", "缓慢发展", "停滞", "起步"], ans: "快速发展" },
+                    { q: "杭州大数据产业发展如何？", opts: ["快速发展", "缓慢发展", "停滞", "起步"], ans: "快速发展" },
+                    { q: "杭州物联网产业发展如何？", opts: ["快速发展", "缓慢发展", "停滞", "起步"], ans: "快速发展" },
+                    { q: "杭州电子商务产业发展如何？", opts: ["快速发展", "缓慢发展", "停滞", "起步"], ans: "快速发展" },
+                    { q: "杭州金融科技产业发展如何？", opts: ["快速发展", "缓慢发展", "停滞", "起步"], ans: "快速发展" },
+                    { q: "杭州有多少家科研院所？", opts: ["众多", "10家", "20家", "5家"], ans: "众多" },
+                    { q: "杭州有多少所高等院校？", opts: ["40多所", "10所", "20所", "5所"], ans: "40多所" },
+                    { q: "浙江大学位于杭州哪里？", opts: ["西湖区", "滨江区", "萧山区", "余杭区"], ans: "西湖区" },
+                    { q: "浙江大学是什么级别的大学？", opts: ["双一流大学", "普通大学", "专科院校", "民办大学"], ans: "双一流大学" },
+                    { q: "杭州有多少家国家级实验室？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                    { q: "杭州有多少家省级实验室？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                    { q: "杭州科技创新能力在全国排名如何？", opts: ["前列", "中等", "落后", "末尾"], ans: "前列" }
+                ],
+                "文化": [
+                    { q: "杭州有多少座博物馆？", opts: ["众多", "10座", "20座", "5座"], ans: "众多" },
+                    { q: "浙江省博物馆位于杭州哪里？", opts: ["西湖区", "滨江区", "萧山区", "余杭区"], ans: "西湖区" },
+                    { q: "良渚博物院位于杭州哪里？", opts: ["余杭区", "西湖区", "临安区", "富阳区"], ans: "余杭区" },
+                    { q: "中国丝绸博物馆位于杭州哪里？", opts: ["西湖区", "滨江区", "萧山区", "余杭区"], ans: "西湖区" },
+                    { q: "中国茶叶博物馆位于杭州哪里？", opts: ["西湖区", "滨江区", "萧山区", "余杭区"], ans: "西湖区" },
+                    { q: "杭州有多少座图书馆？", opts: ["众多", "10座", "20座", "5座"], ans: "众多" },
+                    { q: "杭州图书馆是什么级别的图书馆？", opts: ["国家一级图书馆", "省级图书馆", "市级图书馆", "区级图书馆"], ans: "国家一级图书馆" },
+                    { q: "杭州有多少座剧院？", opts: ["众多", "10座", "20座", "5座"], ans: "众多" },
+                    { q: "杭州大剧院位于杭州哪里？", opts: ["钱塘江边", "西湖边", "市中心", "西溪湿地"], ans: "钱塘江边" },
+                    { q: "杭州有多少座美术馆？", opts: ["众多", "10座", "20座", "5座"], ans: "众多" },
+                    { q: "浙江美术馆位于杭州哪里？", opts: ["西湖边", "钱塘江边", "市中心", "西溪湿地"], ans: "西湖边" },
+                    { q: "杭州有多少座体育馆？", opts: ["众多", "10座", "20座", "5座"], ans: "众多" },
+                    { q: "杭州奥体中心位于杭州哪里？", opts: ["滨江区", "西湖区", "萧山区", "余杭区"], ans: "滨江区" },
+                    { q: "杭州奥体中心是什么级别的场馆？", opts: ["大型综合体育场馆", "小型场馆", "中型场馆", "专业场馆"], ans: "大型综合体育场馆" },
+                    { q: "杭州有多少座公园？", opts: ["众多", "10座", "20座", "50座"], ans: "众多" },
+                    { q: "杭州植物园位于杭州哪里？", opts: ["西湖边", "钱塘江边", "市中心", "西溪湿地"], ans: "西湖边" },
+                    { q: "杭州动物园位于杭州哪里？", opts: ["西湖边", "钱塘江边", "市中心", "西溪湿地"], ans: "西湖边" },
+                    { q: "杭州有多少座寺庙？", opts: ["众多", "10座", "20座", "5座"], ans: "众多" },
+                    { q: "灵隐寺建于哪个朝代？", opts: ["东晋", "唐朝", "宋朝", "明朝"], ans: "东晋" },
+                    { q: "灵隐寺位于杭州哪里？", opts: ["西湖西面", "西湖东面", "钱塘江边", "市中心"], ans: "西湖西面" }
+                ],
+                "特产美食": [
+                    { q: "西湖醋鱼是什么菜系？", opts: ["杭帮菜", "川菜", "粤菜", "鲁菜"], ans: "杭帮菜" },
+                    { q: "龙井虾仁是什么菜系？", opts: ["杭帮菜", "川菜", "粤菜", "鲁菜"], ans: "杭帮菜" },
+                    { q: "叫化童鸡是什么菜系？", opts: ["杭帮菜", "川菜", "粤菜", "鲁菜"], ans: "杭帮菜" },
+                    { q: "宋嫂鱼羹是什么菜系？", opts: ["杭帮菜", "川菜", "粤菜", "鲁菜"], ans: "杭帮菜" },
+                    { q: "杭州小笼包是什么美食？", opts: ["杭州特色小吃", "上海小吃", "北京小吃", "广州小吃"], ans: "杭州特色小吃" },
+                    { q: "杭州片儿川是什么美食？", opts: ["杭州特色面条", "上海面条", "北京面条", "广州面条"], ans: "杭州特色面条" },
+                    { q: "杭州猫耳朵是什么美食？", opts: ["杭州特色小吃", "上海小吃", "北京小吃", "广州小吃"], ans: "杭州特色小吃" },
+                    { q: "杭州定胜糕是什么美食？", opts: ["杭州特色糕点", "上海糕点", "北京糕点", "广州糕点"], ans: "杭州特色糕点" },
+                    { q: "杭州藕粉是什么特产？", opts: ["杭州特色食品", "上海食品", "北京食品", "广州食品"], ans: "杭州特色食品" },
+                    { q: "杭州酱鸭是什么特产？", opts: ["杭州特色食品", "上海食品", "北京食品", "广州食品"], ans: "杭州特色食品" },
+                    { q: "杭州西湖莼菜是什么特产？", opts: ["杭州特色食材", "上海食材", "北京食材", "广州食材"], ans: "杭州特色食材" },
+                    { q: "杭州笋干是什么特产？", opts: ["杭州特色食材", "上海食材", "北京食材", "广州食材"], ans: "杭州特色食材" },
+                    { q: "杭州茶叶有哪些品种？", opts: ["龙井茶等多种", "只有龙井茶", "只有绿茶", "只有红茶"], ans: "龙井茶等多种" },
+                    { q: "径山茶是什么级别的茶？", opts: ["中国名茶", "普通茶", "省级名茶", "市级名茶"], ans: "中国名茶" },
+                    { q: "天目云雾茶是什么级别的茶？", opts: ["中国名茶", "普通茶", "省级名茶", "市级名茶"], ans: "中国名茶" },
+                    { q: "杭州丝绸有什么特点？", opts: ["质地轻柔、色彩丰富", "厚重", "单一颜色", "粗糙"], ans: "质地轻柔、色彩丰富" },
+                    { q: "杭州刺绣有什么特点？", opts: ["工艺精湛、图案精美", "简单", "粗糙", "单一"], ans: "工艺精湛、图案精美" },
+                    { q: "杭州竹编是什么特产？", opts: ["杭州特色工艺品", "上海工艺品", "北京工艺品", "广州工艺品"], ans: "杭州特色工艺品" },
+                    { q: "杭州木雕是什么特产？", opts: ["杭州特色工艺品", "上海工艺品", "北京工艺品", "广州工艺品"], ans: "杭州特色工艺品" },
+                    { q: "杭州石雕是什么特产？", opts: ["杭州特色工艺品", "上海工艺品", "北京工艺品", "广州工艺品"], ans: "杭州特色工艺品" }
+                ],
+                "交通": [
+                    { q: "杭州有多少条地铁线路？", opts: ["多条", "1条", "2条", "5条"], ans: "多条" },
+                    { q: "杭州地铁总里程约为多少公里？", opts: ["约500公里", "约200公里", "约100公里", "约300公里"], ans: "约500公里" },
+                    { q: "杭州地铁1号线何时开通？", opts: ["2012年", "2010年", "2015年", "2020年"], ans: "2012年" },
+                    { q: "杭州地铁1号线连接哪些区域？", opts: ["萧山区和余杭区", "西湖区和滨江区", "上城区和拱墅区", "富阳区和临安区"], ans: "萧山区和余杭区" },
+                    { q: "杭州地铁2号线何时开通？", opts: ["2014年", "2012年", "2015年", "2020年"], ans: "2014年" },
+                    { q: "杭州地铁4号线何时开通？", opts: ["2015年", "2014年", "2016年", "2020年"], ans: "2015年" },
+                    { q: "杭州地铁5号线何时开通？", opts: ["2019年", "2015年", "2020年", "2022年"], ans: "2019年" },
+                    { q: "杭州地铁6号线何时开通？", opts: ["2020年", "2019年", "2021年", "2022年"], ans: "2020年" },
+                    { q: "杭州地铁7号线何时开通？", opts: ["2021年", "2020年", "2022年", "2023年"], ans: "2021年" },
+                    { q: "杭州地铁9号线何时开通？", opts: ["2021年", "2020年", "2022年", "2023年"], ans: "2021年" },
+                    { q: "杭州地铁19号线何时开通？", opts: ["2022年", "2021年", "2023年", "2024年"], ans: "2022年" },
+                    { q: "杭州萧山国际机场何时建成？", opts: ["2000年", "1990年", "2010年", "2020年"], ans: "2000年" },
+                    { q: "杭州萧山国际机场有多少航站楼？", opts: ["多个", "1个", "2个", "3个"], ans: "多个" },
+                    { q: "杭州萧山国际机场年旅客吞吐量约为多少？", opts: ["数千万人次", "数百万次", "数千万次", "数亿次"], ans: "数千万人次" },
+                    { q: "杭州东站何时建成？", opts: ["2013年", "2010年", "2015年", "2020年"], ans: "2013年" },
+                    { q: "杭州东站有多少站台？", opts: ["多个站台", "5个", "10个", "15个"], ans: "多个站台" },
+                    { q: "杭州城站火车站建于哪个年代？", opts: ["清末", "民国", "新中国成立后", "改革开放后"], ans: "清末" },
+                    { q: "杭州南站位于杭州哪里？", opts: ["萧山区", "西湖区", "滨江区", "余杭区"], ans: "萧山区" },
+                    { q: "杭州有多少条高速公路？", opts: ["多条", "1条", "2条", "5条"], ans: "多条" },
+                    { q: "杭州绕城高速公路全长约多少公里？", opts: ["约100公里", "约50公里", "约200公里", "约150公里"], ans: "约100公里" }
+                ],
+                "行政区划": [
+                    { q: "上城区位于杭州哪个位置？", opts: ["市中心", "城东", "城西", "城南"], ans: "市中心" },
+                    { q: "拱墅区位于杭州哪个位置？", opts: ["市中心北部", "市中心南部", "城东", "城西"], ans: "市中心北部" },
+                    { q: "西湖区位于杭州哪个位置？", opts: ["城西", "城东", "城南", "城北"], ans: "城西" },
+                    { q: "滨江区位于杭州哪个位置？", opts: ["钱塘江南岸", "钱塘江北岸", "西湖西岸", "西湖东岸"], ans: "钱塘江南岸" },
+                    { q: "萧山区位于杭州哪个位置？", opts: ["东部", "西部", "南部", "北部"], ans: "东部" },
+                    { q: "余杭区位于杭州哪个位置？", opts: ["西北部", "东南部", "西南部", "东北部"], ans: "西北部" },
+                    { q: "临平区位于杭州哪个位置？", opts: ["东北部", "西南部", "东南部", "西北部"], ans: "东北部" },
+                    { q: "钱塘区位于杭州哪个位置？", opts: ["东部", "西部", "南部", "北部"], ans: "东部" },
+                    { q: "富阳区位于杭州哪个位置？", opts: ["西南部", "东北部", "东南部", "西北部"], ans: "西南部" },
+                    { q: "临安区位于杭州哪个位置？", opts: ["西部", "东部", "南部", "北部"], ans: "西部" },
+                    { q: "桐庐县位于杭州哪个位置？", opts: ["西南部", "东北部", "东南部", "西北部"], ans: "西南部" },
+                    { q: "淳安县位于杭州哪个位置？", opts: ["西部", "东部", "南部", "北部"], ans: "西部" },
+                    { q: "建德市位于杭州哪个位置？", opts: ["西南部", "东北部", "东南部", "西北部"], ans: "西南部" },
+                    { q: "上城区和哪个区合并？", opts: ["江干区", "拱墅区", "西湖区", "滨江区"], ans: "江干区" },
+                    { q: "拱墅区和哪个区合并？", opts: ["下城区", "上城区", "西湖区", "滨江区"], ans: "下城区" },
+                    { q: "钱塘区由哪些区域组成？", opts: ["原江干区和萧山区部分区域", "原西湖区和滨江区", "原余杭区和临平区", "原富阳区和临安区"], ans: "原江干区和萧山区部分区域" },
+                    { q: "临平区由哪些区域组成？", opts: ["原余杭区部分区域", "原西湖区部分区域", "原萧山区部分区域", "原滨江区部分区域"], ans: "原余杭区部分区域" },
+                    { q: "杭州行政区划调整发生在哪一年？", opts: ["2021年", "2020年", "2019年", "2018年"], ans: "2021年" },
+                    { q: "杭州行政区划调整前有多少个区？", opts: ["9个", "10个", "8个", "7个"], ans: "9个" },
+                    { q: "杭州行政区划调整后有多少个区？", opts: ["10个", "9个", "11个", "8个"], ans: "10个" }
+                ],
+                "国际活动": [
+                    { q: "G20杭州峰会的主题是什么？", opts: ["构建创新、活力、联动、包容的世界经济", "全球经济发展", "国际合作", "贸易自由化"], ans: "构建创新、活力、联动、包容的世界经济" },
+                    { q: "杭州亚运会的口号是什么？", opts: ["心心相融，@未来", "更快更高更强", "团结友谊进步", "激情亚运"], ans: "心心相融，@未来" },
+                    { q: "杭州亚运会吉祥物是什么？", opts: ["琮琮、宸宸、莲莲", "熊猫", "龙", "虎"], ans: "琮琮、宸宸、莲莲" },
+                    { q: "杭州亚运会吉祥物代表什么？", opts: ["良渚文化、运河文化、西湖文化", "杭州历史", "杭州地理", "杭州经济"], ans: "良渚文化、运河文化、西湖文化" },
+                    { q: "杭州亚运会火炬名称是什么？", opts: ["薪火", "圣火", "火炬", "亚运火炬"], ans: "薪火" },
+                    { q: "杭州亚运会火炬设计灵感来自什么？", opts: ["良渚文化", "西湖文化", "运河文化", "钱塘江文化"], ans: "良渚文化" },
+                    { q: "杭州亚运会奖牌名称是什么？", opts: ["湖山", "金牌", "亚运奖牌", "杭州奖牌"], ans: "湖山" },
+                    { q: "杭州亚运会奖牌设计灵感来自什么？", opts: ["西湖", "钱塘江", "运河", "良渚"], ans: "西湖" },
+                    { q: "杭州亚运会开幕式在哪里举行？", opts: ["杭州奥体中心", "西湖", "钱塘江边", "黄龙体育中心"], ans: "杭州奥体中心" },
+                    { q: "杭州亚运会参赛国家和地区有多少？", opts: ["多个国家和地区", "10个", "20个", "30个"], ans: "多个国家和地区" },
+                    { q: "杭州亚运会参赛运动员有多少？", opts: ["上万名运动员", "1000名", "5000名", "2000名"], ans: "上万名运动员" },
+                    { q: "杭州亚运会比赛项目有多少？", opts: ["40多个大项", "20个大项", "30个大项", "10个大项"], ans: "40多个大项" },
+                    { q: "杭州亚运会新增哪些项目？", opts: ["电子竞技等", "传统项目", "冬季项目", "水上项目"], ans: "电子竞技等" },
+                    { q: "杭州亚残运会吉祥物是什么？", opts: ["飞飞", "熊猫", "龙", "虎"], ans: "飞飞" },
+                    { q: "杭州亚残运会吉祥物代表什么？", opts: ["良渚文化中的神鸟", "杭州历史", "杭州地理", "杭州经济"], ans: "良渚文化中的神鸟" },
+                    { q: "杭州亚运会场馆有多少？", opts: ["多个场馆", "10个", "20个", "30个"], ans: "多个场馆" },
+                    { q: "杭州亚运会新建场馆有多少？", opts: ["多个", "5个", "10个", "15个"], ans: "多个" },
+                    { q: "杭州亚运会改造场馆有多少？", opts: ["多个", "5个", "10个", "15个"], ans: "多个" },
+                    { q: "杭州亚运会临时场馆有多少？", opts: ["多个", "5个", "10个", "15个"], ans: "多个" },
+                    { q: "杭州亚运会协办城市有哪些？", opts: ["多个城市", "1个城市", "2个城市", "3个城市"], ans: "多个城市" }
+                ]
+            };
+
+            let moreQuestions = [];
+            for (let cat in categories) {
+                categories[cat].forEach(item => {
+                    moreQuestions.push({
+                        question: item.q,
+                        options: item.opts,
+                        correctAnswer: item.ans,
+                        category: cat
+                    });
+                });
+            }
+            return moreQuestions;
+        }
+
+        // 生成更多问答题目以达到1000题
+        function generateAdditionalQuizQuestions() {
+            const additionalQuestions = [];
+            
+            // 地理扩展题目
+            const geoQuestions = [
+                { q: "杭州位于哪个省份的北部？", opts: ["浙江省北部", "浙江省南部", "浙江省东部", "浙江省西部"], ans: "浙江省北部" },
+                { q: "杭州与哪些省份相邻？", opts: ["安徽、江西、上海", "江苏、安徽", "福建、江西", "上海、江苏"], ans: "安徽、江西、上海" },
+                { q: "杭州的地形特点是什么？", opts: ["三面环山一面城", "四面环山", "平原地形", "高原地形"], ans: "三面环山一面城" },
+                { q: "杭州西湖的水源来自哪里？", opts: ["钱塘江和群山溪流", "地下水", "人工引水", "雨水"], ans: "钱塘江和群山溪流" },
+                { q: "西湖的蓄水量约为多少立方米？", opts: ["约1400万立方米", "约1000万立方米", "约500万立方米", "约2000万立方米"], ans: "约1400万立方米" },
+                { q: "杭州的年平均日照时数约为多少？", opts: ["约1800小时", "约1500小时", "约2000小时", "约1000小时"], ans: "约1800小时" },
+                { q: "杭州的无霜期约为多少天？", opts: ["约250天", "约200天", "约300天", "约150天"], ans: "约250天" },
+                { q: "杭州的主要河流有哪些？", opts: ["钱塘江、富春江、新安江", "长江、黄河", "珠江、赣江", "淮河、海河"], ans: "钱塘江、富春江、新安江" },
+                { q: "钱塘江在杭州境内长约多少公里？", opts: ["约100公里", "约50公里", "约200公里", "约150公里"], ans: "约100公里" },
+                { q: "杭州的山区主要分布在哪里？", opts: ["西部和南部", "东部和北部", "市中心", "钱塘江沿岸"], ans: "西部和南部" },
+                { q: "杭州的平原主要分布在哪里？", opts: ["东部和北部", "西部和南部", "市中心", "钱塘江沿岸"], ans: "东部和北部" },
+                { q: "杭州的湿地有哪些？", opts: ["西溪湿地、西湖湿地", "东湖湿地", "南湖湿地", "北湖湿地"], ans: "西溪湿地、西湖湿地" },
+                { q: "西溪湿地有多少种鸟类？", opts: ["约180种", "约100种", "约50种", "约200种"], ans: "约180种" },
+                { q: "西溪湿地有多少种植物？", opts: ["约600种", "约300种", "约100种", "约1000种"], ans: "约600种" },
+                { q: "杭州的森林主要分布在哪里？", opts: ["西部山区", "东部平原", "市中心", "钱塘江沿岸"], ans: "西部山区" },
+                { q: "杭州的主要树种有哪些？", opts: ["香樟、松树、杉树", "杨树、柳树", "银杏、梧桐", "榕树、椰树"], ans: "香樟、松树、杉树" },
+                { q: "杭州的矿产资源有哪些？", opts: ["萤石、石灰石", "煤炭、石油", "铁矿、铜矿", "金矿、银矿"], ans: "萤石、石灰石" },
+                { q: "杭州的水资源总量约为多少？", opts: ["约140亿立方米", "约100亿立方米", "约50亿立方米", "约200亿立方米"], ans: "约140亿立方米" },
+                { q: "杭州的人均水资源量约为多少？", opts: ["约1100立方米", "约500立方米", "约2000立方米", "约800立方米"], ans: "约1100立方米" },
+                { q: "杭州的地下水储量约为多少？", opts: ["约20亿立方米", "约10亿立方米", "约30亿立方米", "约5亿立方米"], ans: "约20亿立方米" }
+            ];
+            
+            // 历史扩展题目
+            const histQuestions = [
+                { q: "杭州在秦朝时属于哪个郡？", opts: ["会稽郡", "吴郡", "丹阳郡", "豫章郡"], ans: "会稽郡" },
+                { q: "杭州在汉朝时称什么？", opts: ["钱唐县", "杭州", "临安", "余杭"], ans: "钱唐县" },
+                { q: "杭州在三国时期属于哪个国家？", opts: ["吴国", "蜀国", "魏国", "东吴"], ans: "吴国" },
+                { q: "杭州在南北朝时期属于哪个朝代？", opts: ["南朝", "北朝", "东晋", "西晋"], ans: "南朝" },
+                { q: "杭州在隋朝时称什么？", opts: ["杭州", "钱唐", "临安", "余杭"], ans: "杭州" },
+                { q: "杭州在唐朝时是什么级别的城市？", opts: ["州治", "县治", "郡治", "府治"], ans: "州治" },
+                { q: "杭州在五代十国时期属于哪个国家？", opts: ["吴越国", "南唐", "闽国", "楚国"], ans: "吴越国" },
+                { q: "吴越国在杭州建都多少年？", opts: ["约70年", "约50年", "约100年", "约30年"], ans: "约70年" },
+                { q: "吴越国国王钱镠的陵墓在哪里？", opts: ["临安", "西湖边", "钱塘江边", "天目山"], ans: "临安" },
+                { q: "南宋在杭州建都多少年？", opts: ["约140年", "约100年", "约200年", "约50年"], ans: "约140年" },
+                { q: "南宋杭州的人口约为多少？", opts: ["约100万", "约50万", "约200万", "约30万"], ans: "约100万" },
+                { q: "南宋杭州的经济地位如何？", opts: ["全国最繁华的城市", "中等城市", "小城市", "边远城市"], ans: "全国最繁华的城市" },
+                { q: "南宋杭州的文化地位如何？", opts: ["全国文化中心", "地方文化中心", "边远文化中心", "无文化中心"], ans: "全国文化中心" },
+                { q: "元朝时杭州是什么级别的城市？", opts: ["路治", "州治", "县治", "府治"], ans: "路治" },
+                { q: "明朝时杭州是什么级别的城市？", opts: ["府治", "州治", "县治", "路治"], ans: "府治" },
+                { q: "清朝时杭州是什么级别的城市？", opts: ["府治", "州治", "县治", "路治"], ans: "府治" },
+                { q: "杭州在民国时期是什么级别的城市？", opts: ["省会", "县城", "直辖市", "特别市"], ans: "省会" },
+                { q: "杭州在1949年后是什么级别的城市？", opts: ["省会", "县城", "直辖市", "特别市"], ans: "省会" },
+                { q: "杭州何时成为副省级城市？", opts: ["1994年", "1990年", "2000年", "1980年"], ans: "1994年" },
+                { q: "杭州何时成为超大城市？", opts: ["2023年", "2020年", "2015年", "2010年"], ans: "2023年" }
+            ];
+            
+            // 科技扩展题目
+            const techQuestions = [
+                { q: "杭州有多少家国家级高新技术企业？", opts: ["众多家", "100家", "500家", "1000家"], ans: "众多家" },
+                { q: "杭州有多少家省级高新技术企业？", opts: ["众多家", "100家", "500家", "1000家"], ans: "众多家" },
+                { q: "杭州有多少家市级高新技术企业？", opts: ["众多家", "100家", "500家", "1000家"], ans: "众多家" },
+                { q: "杭州有多少家科技型中小企业？", opts: ["众多家", "100家", "500家", "1000家"], ans: "众多家" },
+                { q: "杭州有多少家创新型领军企业？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家瞪羚企业？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家专精特新企业？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家隐形冠军企业？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家国家级孵化器？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家省级孵化器？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家市级孵化器？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家众创空间？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家加速器？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家产业园区？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家科技园区？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家创新园区？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家创业园区？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家科技企业孵化器？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家创业服务中心？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" },
+                { q: "杭州有多少家科技创新服务中心？", opts: ["多家", "1家", "5家", "10家"], ans: "多家" }
+            ];
+            
+            // 文化扩展题目
+            const cultQuestions = [
+                { q: "杭州有多少座国家级博物馆？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座省级博物馆？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座市级博物馆？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座区县级博物馆？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座私人博物馆？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座专题博物馆？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座纪念馆？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座名人故居？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座历史建筑？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座文物保护单位？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座国家级文物保护单位？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座省级文物保护单位？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座市级文物保护单位？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座区县级文物保护单位？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座历史街区？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座历史文化街区？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座历史文化名镇？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座历史文化名村？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座传统村落？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" },
+                { q: "杭州有多少座古村落？", opts: ["多座", "1座", "5座", "10座"], ans: "多座" }
+            ];
+            
+            // 经济扩展题目
+            const econQuestions = [
+                { q: "杭州GDP在全国排名如何？", opts: ["前列", "中等", "落后", "末尾"], ans: "前列" },
+                { q: "杭州人均GDP约为多少？", opts: ["约15万元", "约10万元", "约20万元", "约5万元"], ans: "约15万元" },
+                { q: "杭州财政收入约为多少？", opts: ["数千亿元", "数百亿元", "数千万元", "数亿元"], ans: "数千亿元" },
+                { q: "杭州固定资产投资约为多少？", opts: ["数千亿元", "数百亿元", "数千万元", "数亿元"], ans: "数千亿元" },
+                { q: "杭州社会消费品零售总额约为多少？", opts: ["数千亿元", "数百亿元", "数千万元", "数亿元"], ans: "数千亿元" },
+                { q: "杭州进出口总额约为多少？", opts: ["数千亿元", "数百亿元", "数千万元", "数亿元"], ans: "数千亿元" },
+                { q: "杭州出口总额约为多少？", opts: ["数千亿元", "数百亿元", "数千万元", "数亿元"], ans: "数千亿元" },
+                { q: "杭州进口总额约为多少？", opts: ["数千亿元", "数百亿元", "数千万元", "数亿元"], ans: "数千亿元" },
+                { q: "杭州实际利用外资约为多少？", opts: ["数十亿美元", "数亿美元", "数千万美元", "数百万美元"], ans: "数十亿美元" },
+                { q: "杭州城镇居民人均可支配收入约为多少？", opts: ["约7万元", "约5万元", "约10万元", "约3万元"], ans: "约7万元" },
+                { q: "杭州农村居民人均可支配收入约为多少？", opts: ["约4万元", "约2万元", "约6万元", "约1万元"], ans: "约4万元" },
+                { q: "杭州城镇登记失业率约为多少？", opts: ["约2%", "约5%", "约10%", "约15%"], ans: "约2%" },
+                { q: "杭州居民消费价格指数涨幅约为多少？", opts: ["约2%", "约5%", "约10%", "约15%"], ans: "约2%" },
+                { q: "杭州工业增加值约为多少？", opts: ["数千亿元", "数百亿元", "数千万元", "数亿元"], ans: "数千亿元" },
+                { q: "杭州服务业增加值约为多少？", opts: ["数千亿元", "数百亿元", "数千万元", "数亿元"], ans: "数千亿元" },
+                { q: "杭州农业增加值约为多少？", opts: ["数百亿元", "数千亿元", "数千万元", "数亿元"], ans: "数百亿元" },
+                { q: "杭州三次产业比例约为多少？", opts: ["约2:30:68", "约10:40:50", "约5:45:50", "约1:20:79"], ans: "约2:30:68" },
+                { q: "杭州主导产业有哪些？", opts: ["数字经济、智能制造、生物医药", "农业、工业、服务业", "旅游业、餐饮业、零售业", "教育、医疗、文化"], ans: "数字经济、智能制造、生物医药" },
+                { q: "杭州新兴产业有哪些？", opts: ["人工智能、云计算、大数据", "传统制造业", "传统农业", "传统服务业"], ans: "人工智能、云计算、大数据" },
+                { q: "杭州特色产业有哪些？", opts: ["丝绸、茶叶、中药", "煤炭、钢铁", "石油、化工", "汽车、机械"], ans: "丝绸、茶叶、中药" }
+            ];
+            
+            // 教育扩展题目
+            const eduQuestions = [
+                { q: "杭州有多少所小学？", opts: ["数百所", "数十所", "数所", "上千所"], ans: "数百所" },
+                { q: "杭州有多少所中学？", opts: ["数百所", "数十所", "数所", "上千所"], ans: "数百所" },
+                { q: "杭州有多少所高中？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所职业学校？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所技工学校？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所特殊教育学校？", opts: ["数所", "1所", "数十所", "上百所"], ans: "数所" },
+                { q: "杭州有多少所国际学校？", opts: ["数所", "1所", "数十所", "上百所"], ans: "数所" },
+                { q: "杭州有多少所民办学校？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所公办学校？", opts: ["数百所", "数十所", "数所", "上千所"], ans: "数百所" },
+                { q: "杭州有多少所幼儿园？", opts: ["数百所", "数十所", "数所", "上千所"], ans: "数百所" },
+                { q: "杭州有多少所托儿所？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所早教机构？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所培训机构？", opts: ["数百所", "数十所", "数所", "上千所"], ans: "数百所" },
+                { q: "杭州有多少所语言培训机构？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所艺术培训机构？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所体育培训机构？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所科技培训机构？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所职业技能培训机构？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所继续教育机构？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所老年教育机构？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" }
+            ];
+            
+            // 医疗扩展题目
+            const medQuestions = [
+                { q: "杭州有多少所医院？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所综合医院？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所专科医院？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所中医院？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所中西医结合医院？", opts: ["数所", "1所", "数十所", "上百所"], ans: "数所" },
+                { q: "杭州有多少所妇幼保健院？", opts: ["数所", "1所", "数十所", "上百所"], ans: "数所" },
+                { q: "杭州有多少所儿童医院？", opts: ["数所", "1所", "数十所", "上百所"], ans: "数所" },
+                { q: "杭州有多少所口腔医院？", opts: ["数所", "1所", "数十所", "上百所"], ans: "数所" },
+                { q: "杭州有多少所眼科医院？", opts: ["数所", "1所", "数十所", "上百所"], ans: "数所" },
+                { q: "杭州有多少所肿瘤医院？", opts: ["数所", "1所", "数十所", "上百所"], ans: "数所" },
+                { q: "杭州有多少所心血管医院？", opts: ["数所", "1所", "数十所", "上百所"], ans: "数所" },
+                { q: "杭州有多少所精神卫生中心？", opts: ["数所", "1所", "数十所", "上百所"], ans: "数所" },
+                { q: "杭州有多少所传染病医院？", opts: ["数所", "1所", "数十所", "上百所"], ans: "数所" },
+                { q: "杭州有多少所社区卫生服务中心？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所社区卫生服务站？", opts: ["上百所", "数十所", "数所", "上千所"], ans: "上百所" },
+                { q: "杭州有多少所乡镇卫生院？", opts: ["数十所", "数所", "上百所", "上千所"], ans: "数十所" },
+                { q: "杭州有多少所村卫生室？", opts: ["上百所", "数十所", "数所", "上千所"], ans: "上百所" },
+                { q: "杭州有多少所门诊部？", opts: ["上百所", "数十所", "数所", "上千所"], ans: "上百所" },
+                { q: "杭州有多少所诊所？", opts: ["上百所", "数十所", "数所", "上千所"], ans: "上百所" },
+                { q: "杭州有多少所医务室？", opts: ["上百所", "数十所", "数所", "上千所"], ans: "上百所" }
+            ];
+            
+            // 体育扩展题目
+            const sportQuestions = [
+                { q: "杭州有多少座体育场？", opts: ["数十座", "数座", "上百座", "上千座"], ans: "数十座" },
+                { q: "杭州有多少座体育馆？", opts: ["数十座", "数座", "上百座", "上千座"], ans: "数十座" },
+                { q: "杭州有多少座游泳馆？", opts: ["数十座", "数座", "上百座", "上千座"], ans: "数十座" },
+                { q: "杭州有多少座游泳池？", opts: ["数十座", "数座", "上百座", "上千座"], ans: "数十座" },
+                { q: "杭州有多少座篮球场？", opts: ["上百座", "数十座", "数座", "上千座"], ans: "上百座" },
+                { q: "杭州有多少座足球场？", opts: ["数十座", "数座", "上百座", "上千座"], ans: "数十座" },
+                { q: "杭州有多少座网球场？", opts: ["数十座", "数座", "上百座", "上千座"], ans: "数十座" },
+                { q: "杭州有多少座羽毛球场？", opts: ["上百座", "数十座", "数座", "上千座"], ans: "上百座" },
+                { q: "杭州有多少座乒乓球馆？", opts: ["数十座", "数座", "上百座", "上千座"], ans: "数十座" },
+                { q: "杭州有多少座健身房？", opts: ["上百座", "数十座", "数座", "上千座"], ans: "上百座" },
+                { q: "杭州有多少座瑜伽馆？", opts: ["数十座", "数座", "上百座", "上千座"], ans: "数十座" },
+                { q: "杭州有多少座武术馆？", opts: ["数座", "1座", "数十座", "上百座"], ans: "数座" },
+                { q: "杭州有多少座跆拳道馆？", opts: ["数十座", "数座", "上百座", "上千座"], ans: "数十座" },
+                { q: "杭州有多少座拳击馆？", opts: ["数座", "1座", "数十座", "上百座"], ans: "数座" },
+                { q: "杭州有多少座高尔夫球场？", opts: ["数座", "1座", "数十座", "上百座"], ans: "数座" },
+                { q: "杭州有多少座保龄球馆？", opts: ["数座", "1座", "数十座", "上百座"], ans: "数座" },
+                { q: "杭州有多少座台球馆？", opts: ["数十座", "数座", "上百座", "上千座"], ans: "数十座" },
+                { q: "杭州有多少座棋牌室？", opts: ["上百座", "数十座", "数座", "上千座"], ans: "上百座" },
+                { q: "杭州有多少座滑雪场？", opts: ["数座", "1座", "数十座", "上百座"], ans: "数座" },
+                { q: "杭州有多少座攀岩馆？", opts: ["数座", "1座", "数十座", "上百座"], ans: "数座" }
+            ];
+            
+            // 旅游扩展题目
+            const tourQuestions = [
+                { q: "杭州有多少个A级景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个5A级景区？", opts: ["数个", "1个", "数十个", "上百个"], ans: "数个" },
+                { q: "杭州有多少个4A级景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个3A级景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个2A级景区？", opts: ["数个", "1个", "数十个", "上百个"], ans: "数个" },
+                { q: "杭州有多少个国家级景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个省级景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个市级景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个区县级景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个自然景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个人文景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个历史景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个文化景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个生态景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个休闲景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个度假景区？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个乡村旅游景点？", opts: ["上百个", "数十个", "数个", "上千个"], ans: "上百个" },
+                { q: "杭州有多少个红色旅游景点？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" },
+                { q: "杭州有多少个工业旅游景点？", opts: ["数个", "1个", "数十个", "上百个"], ans: "数个" },
+                { q: "杭州有多少个农业旅游景点？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" }
+            ];
+            
+            // 餐饮扩展题目
+            const foodQuestions = [
+                { q: "杭州有多少家餐厅？", opts: ["上万家", "数千家", "数百家", "数十家"], ans: "上万家" },
+                { q: "杭州有多少家中餐厅？", opts: ["上万家", "数千家", "数百家", "数十家"], ans: "上万家" },
+                { q: "杭州有多少家西餐厅？", opts: ["数百家", "数十家", "数家", "上千家"], ans: "数百家" },
+                { q: "杭州有多少家日式餐厅？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家韩式餐厅？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家东南亚餐厅？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家火锅店？", opts: ["数百家", "数十家", "数家", "上千家"], ans: "数百家" },
+                { q: "杭州有多少家烧烤店？", opts: ["数百家", "数十家", "数家", "上千家"], ans: "数百家" },
+                { q: "杭州有多少家快餐店？", opts: ["上千家", "数百家", "数十家", "数家"], ans: "上千家" },
+                { q: "杭州有多少家小吃店？", opts: ["上千家", "数百家", "数十家", "数家"], ans: "上千家" },
+                { q: "杭州有多少家甜品店？", opts: ["数百家", "数十家", "数家", "上千家"], ans: "数百家" },
+                { q: "杭州有多少家咖啡厅？", opts: ["数百家", "数十家", "数家", "上千家"], ans: "数百家" },
+                { q: "杭州有多少家茶馆？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家酒吧？", opts: ["数百家", "数十家", "数家", "上千家"], ans: "数百家" },
+                { q: "杭州有多少家夜宵店？", opts: ["数百家", "数十家", "数家", "上千家"], ans: "数百家" },
+                { q: "杭州有多少家早餐店？", opts: ["上千家", "数百家", "数十家", "数家"], ans: "上千家" },
+                { q: "杭州有多少家外卖店？", opts: ["上千家", "数百家", "数十家", "数家"], ans: "上千家" },
+                { q: "杭州有多少家自助餐厅？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家主题餐厅？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家网红餐厅？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" }
+            ];
+            
+            // 酒店扩展题目
+            const hotelQuestions = [
+                { q: "杭州有多少家酒店？", opts: ["上千家", "数百家", "数十家", "数家"], ans: "上千家" },
+                { q: "杭州有多少家五星级酒店？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家四星级酒店？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家三星级酒店？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家二星级酒店？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家一星级酒店？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家精品酒店？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家商务酒店？", opts: ["上百家", "数十家", "数家", "上千家"], ans: "上百家" },
+                { q: "杭州有多少家度假酒店？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家主题酒店？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家民宿？", opts: ["上千家", "数百家", "数十家", "数家"], ans: "上千家" },
+                { q: "杭州有多少家青年旅舍？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家招待所？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家旅馆？", opts: ["上百家", "数十家", "数家", "上千家"], ans: "上百家" },
+                { q: "杭州有多少家宾馆？", opts: ["上百家", "数十家", "数家", "上千家"], ans: "上百家" },
+                { q: "杭州有多少家公寓式酒店？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家连锁酒店？", opts: ["上百家", "数十家", "数家", "上千家"], ans: "上百家" },
+                { q: "杭州有多少家国际品牌酒店？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家国内品牌酒店？", opts: ["上百家", "数十家", "数家", "上千家"], ans: "上百家" },
+                { q: "杭州有多少家经济型酒店？", opts: ["上百家", "数十家", "数家", "上千家"], ans: "上百家" }
+            ];
+            
+            // 购物扩展题目
+            const shopQuestions = [
+                { q: "杭州有多少家商场？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家购物中心？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家百货商店？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家超市？", opts: ["上百家", "数十家", "数家", "上千家"], ans: "上百家" },
+                { q: "杭州有多少家便利店？", opts: ["上千家", "数百家", "数十家", "数家"], ans: "上千家" },
+                { q: "杭州有多少家专卖店？", opts: ["上千家", "数百家", "数十家", "数家"], ans: "上千家" },
+                { q: "杭州有多少家连锁店？", opts: ["上千家", "数百家", "数十家", "数家"], ans: "上千家" },
+                { q: "杭州有多少家品牌店？", opts: ["上千家", "数百家", "数十家", "数家"], ans: "上千家" },
+                { q: "杭州有多少家旗舰店？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家概念店？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家体验店？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家快闪店？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家奥特莱斯？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家步行街？", opts: ["数十条", "数条", "上百条", "上千条"], ans: "数十条" },
+                { q: "杭州有多少家商业街？", opts: ["数十条", "数条", "上百条", "上千条"], ans: "数十条" },
+                { q: "杭州有多少家特色街区？", opts: ["数十条", "数条", "上百条", "上千条"], ans: "数十条" },
+                { q: "杭州有多少家历史街区？", opts: ["数条", "1条", "数十条", "上百条"], ans: "数条" },
+                { q: "杭州有多少家文化街区？", opts: ["数条", "1条", "数十条", "上百条"], ans: "数条" },
+                { q: "杭州有多少家美食街区？", opts: ["数十条", "数条", "上百条", "上千条"], ans: "数十条" },
+                { q: "杭州有多少家夜市？", opts: ["数十个", "数个", "上百个", "上千个"], ans: "数十个" }
+            ];
+            
+            // 娱乐扩展题目
+            const entQuestions = [
+                { q: "杭州有多少家电影院？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家影剧院？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家剧场？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家音乐厅？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家歌剧院？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家舞剧院？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家话剧剧场？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家相声剧场？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家杂技剧场？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家魔术剧场？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家KTV？", opts: ["上百家", "数十家", "数家", "上千家"], ans: "上百家" },
+                { q: "杭州有多少家网吧？", opts: ["上百家", "数十家", "数家", "上千家"], ans: "上百家" },
+                { q: "杭州有多少家游戏厅？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家游乐场？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家游乐园？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家主题乐园？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家水上乐园？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家儿童乐园？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家电玩城？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家VR体验馆？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" }
+            ];
+            
+            // 金融扩展题目
+            const finQuestions = [
+                { q: "杭州有多少家银行？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家国有银行？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家商业银行？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家外资银行？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家股份制银行？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家城市商业银行？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家农村商业银行？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家信用社？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家保险公司？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家证券公司？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家基金公司？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家信托公司？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家期货公司？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家金融租赁公司？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家消费金融公司？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家小额贷款公司？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家担保公司？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家典当公司？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家投资公司？", opts: ["上百家", "数十家", "数家", "上千家"], ans: "上百家" },
+                { q: "杭州有多少家资产管理公司？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" }
+            ];
+            
+            // 互联网扩展题目
+            const netQuestions = [
+                { q: "杭州有多少家互联网公司？", opts: ["上千家", "数百家", "数十家", "数家"], ans: "上千家" },
+                { q: "杭州有多少家电商平台？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家社交平台？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家内容平台？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家游戏公司？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家视频平台？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家音乐平台？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家直播平台？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家短视频平台？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家新闻平台？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家教育平台？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家医疗平台？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家旅游平台？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家出行平台？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家外卖平台？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家支付平台？", opts: ["数家", "1家", "数十家", "上百家"], ans: "数家" },
+                { q: "杭州有多少家金融科技平台？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家人工智能公司？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家大数据公司？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" },
+                { q: "杭州有多少家云计算公司？", opts: ["数十家", "数家", "上百家", "上千家"], ans: "数十家" }
+            ];
+            
+            // 将所有扩展题目添加到additionalQuestions数组
+            geoQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "地理" }));
+            histQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "历史" }));
+            techQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "科技" }));
+            cultQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "文化" }));
+            econQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "经济" }));
+            eduQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "教育" }));
+            medQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "医疗" }));
+            sportQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "体育" }));
+            tourQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "旅游" }));
+            foodQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "餐饮" }));
+            hotelQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "酒店" }));
+            shopQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "购物" }));
+            entQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "娱乐" }));
+            finQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "金融" }));
+            netQuestions.forEach(item => additionalQuestions.push({ question: item.q, options: item.opts, correctAnswer: item.ans, category: "互联网" }));
+            
+            return additionalQuestions;
+        }
+
+        // 扩展问答题目库
+        const moreQuizData = generateMoreQuizQuestions();
+        quizQuestions.push(...moreQuizData);
+        
+        // 添加额外的问答题目以达到1000题
+        const additionalQuizData = generateAdditionalQuizQuestions();
+        quizQuestions.push(...additionalQuizData);
+
         const difficultyOptions = {
             easy: 2,
             medium: 3,
@@ -936,11 +1692,15 @@
             timeBonus: 0,
             difficulty: 'medium',
             questionType: 'author',
+            currentQuestionType: 'author',
             currentPoem: null,
+            currentQuiz: null,
             currentOptions: [],
+            optionElements: [],
             timerInterval: null,
             timeLeft: 15,
             answeredPoems: [],
+            answeredQuiz: [],
             isAnswered: false
         };
 
@@ -1006,10 +1766,13 @@
                 questionType: gameState.questionType,
                 currentQuestionType: 'author',
                 currentPoem: null,
+                currentQuiz: null,
                 currentOptions: [],
+                optionElements: [],
                 timerInterval: null,
                 timeLeft: timerConfig[gameState.difficulty],
                 answeredPoems: [],
+                answeredQuiz: [],
                 isAnswered: false
             };
 
@@ -1025,54 +1788,81 @@
             }
 
             gameState.isAnswered = false;
-            const availablePoems = poems.filter(p => !gameState.answeredPoems.includes(p.content));
-
-            if (availablePoems.length === 0) {
-                gameState.answeredPoems = [];
-            }
-
-            const randomIndex = Math.floor(Math.random() * availablePoems.length);
-            gameState.currentPoem = availablePoems[randomIndex];
-            gameState.answeredPoems.push(gameState.currentPoem.content);
 
             let currentQuestionType = gameState.questionType;
             if (currentQuestionType === 'mixed') {
-                const types = ['author', 'title', 'fill'];
-                currentQuestionType = types[Math.floor(Math.random() * types.length)];
+                const randomVal = Math.random();
+                if (randomVal < 0.9) {
+                    // 90% 概率为杭州问答
+                    currentQuestionType = 'quiz';
+                } else {
+                    // 10% 概率随机为其他三种题型
+                    const otherTypes = ['author', 'title', 'fill'];
+                    currentQuestionType = otherTypes[Math.floor(Math.random() * otherTypes.length)];
+                }
             }
             gameState.currentQuestionType = currentQuestionType;
 
             const optionCount = difficultyOptions[gameState.difficulty];
-            let questionText, correctAnswer, optionPool, displayContent;
+            let questionText, correctAnswer, displayContent;
 
-            if (currentQuestionType === 'fill') {
-                questionText = '请填出下句：';
-                correctAnswer = gameState.currentPoem.secondHalf;
-                optionPool = fillOptions;
-                displayContent = gameState.currentPoem.firstHalf + '__________';
-            } else if (currentQuestionType === 'author') {
-                questionText = '以上诗句的作者是？';
-                correctAnswer = gameState.currentPoem.author;
-                optionPool = authors;
-                displayContent = gameState.currentPoem.content;
-            } else {
-                questionText = '以上诗句的题目是？';
-                correctAnswer = gameState.currentPoem.title;
-                optionPool = titles;
-                displayContent = gameState.currentPoem.content;
-            }
-
-            const optionsSet = new Set([correctAnswer]);
-
-            while (optionsSet.size < optionCount) {
-                const randomOpt = optionPool[Math.floor(Math.random() * optionPool.length)];
-                if (randomOpt !== correctAnswer) {
-                    optionsSet.add(randomOpt);
+            if (currentQuestionType === 'quiz') {
+                const availableQuiz = quizQuestions.filter(q => !gameState.answeredQuiz.includes(q.question));
+                if (availableQuiz.length === 0) {
+                    gameState.answeredQuiz = [];
                 }
-            }
+                const randomQuizIndex = Math.floor(Math.random() * (availableQuiz.length || quizQuestions.length));
+                gameState.currentQuiz = availableQuiz.length > 0 ? availableQuiz[randomQuizIndex] : quizQuestions[randomQuizIndex];
+                gameState.answeredQuiz.push(gameState.currentQuiz.question);
+                
+                questionText = gameState.currentQuiz.question;
+                correctAnswer = gameState.currentQuiz.correctAnswer;
+                displayContent = `【${gameState.currentQuiz.category}】`;
+                
+                const shuffledOptions = [...gameState.currentQuiz.options];
+                shuffleArray(shuffledOptions);
+                gameState.currentOptions = shuffledOptions.slice(0, optionCount);
+                if (!gameState.currentOptions.includes(correctAnswer)) {
+                    gameState.currentOptions[0] = correctAnswer;
+                    shuffleArray(gameState.currentOptions);
+                }
+            } else {
+                const availablePoems = poems.filter(p => !gameState.answeredPoems.includes(p.content));
+                if (availablePoems.length === 0) {
+                    gameState.answeredPoems = [];
+                }
+                const randomIndex = Math.floor(Math.random() * (availablePoems.length || poems.length));
+                gameState.currentPoem = availablePoems.length > 0 ? availablePoems[randomIndex] : poems[randomIndex];
+                gameState.answeredPoems.push(gameState.currentPoem.content);
 
-            gameState.currentOptions = Array.from(optionsSet);
-            shuffleArray(gameState.currentOptions);
+                let optionPool;
+                if (currentQuestionType === 'fill') {
+                    questionText = '请填出下句：';
+                    correctAnswer = gameState.currentPoem.secondHalf;
+                    optionPool = fillOptions;
+                    displayContent = gameState.currentPoem.firstHalf + '__________';
+                } else if (currentQuestionType === 'author') {
+                    questionText = '以上诗句的作者是？';
+                    correctAnswer = gameState.currentPoem.author;
+                    optionPool = authors;
+                    displayContent = gameState.currentPoem.content;
+                } else {
+                    questionText = '以上诗句的题目是？';
+                    correctAnswer = gameState.currentPoem.title;
+                    optionPool = titles;
+                    displayContent = gameState.currentPoem.content;
+                }
+
+                const optionsSet = new Set([correctAnswer]);
+                while (optionsSet.size < optionCount) {
+                    const randomOpt = optionPool[Math.floor(Math.random() * optionPool.length)];
+                    if (randomOpt !== correctAnswer) {
+                        optionsSet.add(randomOpt);
+                    }
+                }
+                gameState.currentOptions = Array.from(optionsSet);
+                shuffleArray(gameState.currentOptions);
+            }
 
             const poemContent = document.getElementById('poemContent');
             const poemQuestion = document.getElementById('poemQuestion');
@@ -1090,7 +1880,7 @@
             feedback.className = 'feedback';
             feedback.style.display = 'none';
             nextBtn.style.display = 'none';
-            favoriteBtn.style.display = 'block';
+            favoriteBtn.style.display = currentQuestionType === 'quiz' ? 'none' : 'block';
 
             optionsGrid.innerHTML = '';
             gameState.optionElements = [];
@@ -1159,7 +1949,9 @@
 
             let correctAnswer;
             const qType = gameState.currentQuestionType;
-            if (qType === 'fill') {
+            if (qType === 'quiz') {
+                correctAnswer = gameState.currentQuiz.correctAnswer;
+            } else if (qType === 'fill') {
                 correctAnswer = gameState.currentPoem.secondHalf;
             } else if (qType === 'author') {
                 correctAnswer = gameState.currentPoem.author;
@@ -1170,7 +1962,8 @@
 
             document.querySelectorAll('.option-btn').forEach(btn => {
                 btn.disabled = true;
-                if (btn.textContent === correctAnswer) {
+                const btnAnswer = btn.textContent.split(' (数字')[0];
+                if (btnAnswer === correctAnswer) {
                     btn.classList.add('correct');
                 }
             });
@@ -1229,6 +2022,8 @@
                 feedbackText.textContent = '回答正确！';
                 if (qType === 'fill') {
                     feedbackDetail.textContent = `完整诗句：${gameState.currentPoem.content}`;
+                } else if (qType === 'quiz') {
+                    feedbackDetail.textContent = `恭喜你答对了！`;
                 } else {
                     feedbackDetail.textContent = `恭喜你答对了！`;
                 }
@@ -1237,6 +2032,8 @@
                 feedbackText.textContent = '回答错误';
                 if (qType === 'fill') {
                     feedbackDetail.innerHTML = `正确下句是：${correctAnswer}<br><span style="font-size:0.85em;color:#666;">完整诗句：${gameState.currentPoem.content}</span>`;
+                } else if (qType === 'quiz') {
+                    feedbackDetail.textContent = `正确答案是：${correctAnswer}`;
                 } else {
                     feedbackDetail.textContent = `正确答案是：${correctAnswer}`;
                 }
@@ -1244,7 +2041,9 @@
 
             feedback.style.display = 'block';
             nextBtn.style.display = 'block';
-            document.getElementById('favoriteBtn').style.display = 'block';
+            if (qType !== 'quiz') {
+                document.getElementById('favoriteBtn').style.display = 'block';
+            }
         }
 
         function nextQuestion() {
